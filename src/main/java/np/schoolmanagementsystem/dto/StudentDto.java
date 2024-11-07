@@ -20,8 +20,6 @@ public class StudentDto {
     String lastName;
     String email;
     String phone_no;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-//    Date dateOfBirth;
     String gender;
     String address;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

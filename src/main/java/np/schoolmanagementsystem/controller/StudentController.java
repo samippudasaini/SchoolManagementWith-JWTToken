@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
     private final StudentService studentService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService)
+    {
         this.studentService = studentService;
     }
     @PostMapping
@@ -39,5 +40,10 @@ public class StudentController {
         return new ResponseEntity<>(studentDto,HttpStatus.OK);
 }
 
+@PostMapping("/{register}")
+    public ResponseEntity<StudentDto> studentRegistration(@RequestBody StudentDto studentDto)
+{
 
+        return new ResponseEntity<>(studentService.studentRegistration(studentDto), HttpStatus.CREATED);
+}
 }

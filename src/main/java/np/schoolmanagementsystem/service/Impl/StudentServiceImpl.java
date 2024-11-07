@@ -9,6 +9,8 @@ import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Data
 
@@ -57,5 +59,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<StudentDto> getAllStudents() {
         return List.of();
+    }
+
+    @Override
+    public StudentDto studentRegistration(StudentDto studentDto) {
+
+            Optional<Student> existingStudent = studentRepository.findByEmail(studentDto.getEmail());
+            if (existingStudent.isPresent()) {
+                throw new RuntimeException("Student already exists");
+            }
+
+
+        Student student=StudentMapper.mapToStudent(studentDto);
+        Student savedStudent=studentRepository.save(student);
+        return StudentMapper.mapToStudentDto(savedStudent);
+
     }
 }

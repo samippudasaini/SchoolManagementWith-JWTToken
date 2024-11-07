@@ -11,5 +11,6 @@ public interface StudentService {
     StudentDto getStudentById(Long id);
     StudentDto deleteStudentById(Long id);
     List<StudentDto> getAllStudents();
+    StudentDto studentRegistration(StudentDto studentDto);
 
 }
