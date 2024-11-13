@@ -2,11 +2,12 @@ package np.schoolmanagementsystem.controller;
 
 
 import np.schoolmanagementsystem.dto.StudentDto;
-import np.schoolmanagementsystem.entity.Student;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
@@ -17,13 +18,17 @@ public class StudentController {
     {
         this.studentService = studentService;
     }
-    @PostMapping
-    public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto studentDto)
-    {
-        return new ResponseEntity<>(studentService.addStudent(studentDto), HttpStatus.CREATED);
-    }
+
+
+//    @PostMapping
+//    public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto studentDto)
+//    {
+//        return new ResponseEntity<>(studentService.addStudent(studentDto), HttpStatus.CREATED);
+//    }
+
+
     @PutMapping("/{studentId}")
-    public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto, @PathVariable Long studentId)
+    public ResponseEntity<StudentDto> updateStudent( @PathVariable Long studentId,@RequestBody StudentDto studentDto)
     {
         StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId);
         return new ResponseEntity<>(updatedStudentDto, HttpStatus.OK);
@@ -34,6 +39,8 @@ public class StudentController {
     StudentDto studentDto=studentService.getStudentById(studentId);
     return new ResponseEntity<>(studentDto, HttpStatus.OK);
 }
+
+
 @DeleteMapping("/{id}")
     public ResponseEntity<StudentDto> deleteStudent(@PathVariable Long id){
       StudentDto studentDto=  studentService.deleteStudentById(id);
@@ -46,4 +53,29 @@ public class StudentController {
 
         return new ResponseEntity<>(studentService.studentRegistration(studentDto), HttpStatus.CREATED);
 }
+
+
+@PostMapping("/login")
+    public ResponseEntity<String> studentLogin(@RequestBody StudentDto studentDto)
+{
+
+        String userName=studentDto.getUserName();
+        String password=studentDto.getPassword();
+//        return new ResponseEntity<>(studentService.studentLogin(userName, password), HttpStatus.OK);
+    if(studentService.studentLogin(userName,password)){
+        return ResponseEntity.ok("Login Successful");
+    }
+    else{
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
+    }
+}
+
+@GetMapping("/getall")
+    public ResponseEntity<List<StudentDto>> getAllStudents()
+{
+    List<StudentDto> students=studentService.getAllStudents();
+    return ResponseEntity.ok(students);
+
+}
+
 }

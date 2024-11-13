@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import np.schoolmanagementsystem.Enum.Role;
 
 import java.util.*;
 
@@ -16,58 +17,61 @@ import java.util.*;
 public class Student {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long studentId;
+    @Column(name = "studentId", unique = true, nullable = false,insertable = false,updatable = false)
+    private Long studentId;
 
     @Column(name="first_name")
-    String firstName;
+    private String firstName;
 
     @Column(name="middle_name")
-    String middleName;
+    private String middleName;
 
     @Column(name="last_name")
-    String lastName;
+    private String lastName;
 
     @Column( name= "email_address",unique=true, nullable=false, length=100)
-    String email;
+    private String email;
 
     @Column(name="phone_number")
-    String phone_no;
-
-//    @Column(name="date_of_birth",length=20)
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-//    Date dateOfBirth;
+    private Long phone_no;
 
     @Column(name="gender")
-    String gender;
+    private String gender;
 
     @Column(name="address")
-    String address;
+    private String address;
 
     @Column(name="enrollement_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    Date enrollmentDate;
+    private Date enrollmentDate;
 
 
     @Column(name="grade")
-    String grade;
+    private String grade;
 
-//    @Column(name="section")
-//    String section;
 
     @Column(name="parent_contact")
-    Long parentContact;
+    private Long parentContact;
 
-
-//    @Column(name="attendance")
-//    String attendanceStatus;
 
     @Column(name="user_name")
-    String userName;
+    private  String userName;
 
     @Column(name="password")
-    String password;
+    private String password;
 
-    @ManyToMany
-    @JoinTable(name="id")
-    private List<Classroom> classroom ;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+//@ManyToMany
+//@JoinTable(
+//            name="StudentsTable",
+//            joinColumns = @JoinColumn(name="studentId"),
+//            inverseJoinColumns = @JoinColumn(name="id")
+//
+//    )
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id")
+    private Classroom classroom;
 }

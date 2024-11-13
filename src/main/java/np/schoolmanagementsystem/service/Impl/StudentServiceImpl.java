@@ -6,10 +6,12 @@ import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.entity.Student;
 import np.schoolmanagementsystem.repository.StudentRepository;
 import np.schoolmanagementsystem.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -19,18 +21,18 @@ public class StudentServiceImpl implements StudentService {
 
    private  StudentRepository studentRepository;
 
-
+@Autowired
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
 
-    @Override
-    public StudentDto addStudent(StudentDto studentDto) {
-            Student student = StudentMapper.mapToStudent(studentDto);
-            Student savedStudent = studentRepository.save(student);
-            return StudentMapper.mapToStudentDto(savedStudent);
-    }
+//    @Override
+//    public StudentDto addStudent(StudentDto studentDto) {
+//            Student student = StudentMapper.mapToStudent(studentDto);
+//            Student savedStudent = studentRepository.save(student);
+//            return StudentMapper.mapToStudentDto(savedStudent);
+//    }
 
     @Override
     public StudentDto updateStudent(StudentDto studentDto, Long studentId) {
@@ -58,8 +60,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> getAllStudents() {
-        return List.of();
-    }
+    List<Student> students=studentRepository.findAll();
+    return students.stream().map(student ->StudentMapper.mapToStudentDto(student))
+            .collect(Collectors.toList());
+}
 
     @Override
     public StudentDto studentRegistration(StudentDto studentDto) {
@@ -73,6 +77,30 @@ public class StudentServiceImpl implements StudentService {
         Student student=StudentMapper.mapToStudent(studentDto);
         Student savedStudent=studentRepository.save(student);
         return StudentMapper.mapToStudentDto(savedStudent);
+
+    }
+
+    @Override
+    public  boolean studentLogin(String userName, String password) {
+        Optional<Student> StudentOptional = studentRepository
+                .findByUserName(userName);
+
+        if (StudentOptional.isEmpty()) {
+            throw new RuntimeException("Student not found ");
+        }
+        else {
+            Student student = StudentOptional.get();
+            if (!student.getUserName().equals(userName)) {
+                throw new RuntimeException("Invalid userName");
+            }
+
+
+            if(!student.getPassword().equals(password)) {
+                throw new RuntimeException("Invalid password");
+            }
+//            return StudentMapper.mapToStudentDto(student);
+            return true;
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.Mapper;
 
 import np.schoolmanagementsystem.dto.StudentDto;
+import np.schoolmanagementsystem.entity.Classroom;
 import np.schoolmanagementsystem.entity.Student;
 
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class StudentMapper {
                studentDto.getGrade(),
                studentDto.getParentContact(),
                studentDto.getPassword(),
-               studentDto.getUsername(),
-               new ArrayList<>()
+               studentDto.getUserName(),
+               new Classroom()
        );
        return student;
     }

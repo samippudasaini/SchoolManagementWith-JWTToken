@@ -8,7 +8,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
 @Getter
 @Setter
 @Table(name="Teacher_table")
@@ -16,42 +16,50 @@ import java.util.List;
 public class Teacher {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long teacher_id;
+    @Column(name = "teacherId",unique = true, nullable = false,insertable = false,updatable = false)
+    private  Long teacherId;
 
     @Column(name="first_Name")
-    String firstName;
+    private String firstName;
 
     @Column(name="middle_Name")
-    String middleName;
+    private String middleName;
 
     @Column(name="last_Name")
-    String lastName;
+    private String lastName;
 
     @Column(name="email_address",nullable=false,length=100,unique=true)
-    String email;
+    private String email;
 
     @Column(name="phone_Number")
-    String phone;
+    private Long phone;
 
     @Column(name="teach_Subject_Name")
-    String subjectName;
+    private String subjectName;
 
 
     @Column(name="teach_Grade")
-    String grade;
+    private String grade;
 
     @Column(name="user_Name")
-    String userName;
+    private String userName;
 
     @Column(name="password")
-    String password;
+    private String password;
+
+
 
 @ManyToMany
-@JoinTable(name="id")
-private List<Classroom> classrooms;
-
-@OneToMany
-@JoinTable(name="subjectId")
+@JoinTable(
+        name = "Teacher_subject", // Name of the join table
+        joinColumns = @JoinColumn(name = "teacherId"),
+        inverseJoinColumns = @JoinColumn(name = "subjectId")
+)
 private List<Subject> subjects;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="id")
+    private Classroom classroom;
+
 }
 

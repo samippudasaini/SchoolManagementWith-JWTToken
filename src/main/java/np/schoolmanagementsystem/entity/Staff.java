@@ -19,30 +19,30 @@ import java.util.Date;
 public class Staff {
     @Id
     @Column(name="Staff_id")
-    Long stff_id;
+    private Long stff_id;
 
     @Column(name="first_name")
-    String firstName;
+    private String firstName;
 
     @Column(name="middle_Name")
-    String middleName;
+    private String middleName;
 
     @Column(name="last_Name")
-    String lastName;
+    private String lastName;
 
     @Column(name="email_Address")
-    String emailAddress;
+    private String emailAddress;
 
     @Column(name="pnone_no")
-    Long pnoneNo;
+    private Long pnoneNo;
 
     @Column(name="position")
-    String position;
+    private String position;
 
     @Column(name="hire_Date")
-    Date hireDate;
+    private  Date hireDate;
 
     @Column(name="staff_Salary")
-    Double salary;
+    private Double salary;
 
 }
