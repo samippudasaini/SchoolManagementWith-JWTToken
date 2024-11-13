@@ -1,25 +1,25 @@
 package np.schoolmanagementsystem.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.*;
+import np.schoolmanagementsystem.Enum.Role;
 
 import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 @Data
 @Entity
 @Table(name="Staff_table")
 public class Staff {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Staff_id")
-    private Long stff_id;
+    private Long staffId;
 
     @Column(name="first_name")
     private String firstName;
@@ -30,19 +30,29 @@ public class Staff {
     @Column(name="last_Name")
     private String lastName;
 
-    @Column(name="email_Address")
-    private String emailAddress;
+    @Column(name="email_Address",unique=true,nullable=false)
+    private String email;
 
     @Column(name="pnone_no")
-    private Long pnoneNo;
+    private Long phone;
 
     @Column(name="position")
     private String position;
 
     @Column(name="hire_Date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private  Date hireDate;
 
     @Column(name="staff_Salary")
     private Double salary;
+
+    @Column(name="Admin_User_Name")
+    private String userName;
+
+    @Column(name="Admin_Password")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

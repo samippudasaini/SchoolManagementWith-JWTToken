@@ -24,6 +24,7 @@ public class StudentMapper {
                studentDto.getParentContact(),
                studentDto.getPassword(),
                studentDto.getUserName(),
+               studentDto.getRole(),
                new Classroom()
        );
        return student;
@@ -43,7 +44,8 @@ public class StudentMapper {
                 student.getGrade(),
                 student.getPassword(),
                 student.getUserName(),
-                student.getParentContact()
+                student.getParentContact(),
+                student.getRole()
 
         );
         return studentDto;

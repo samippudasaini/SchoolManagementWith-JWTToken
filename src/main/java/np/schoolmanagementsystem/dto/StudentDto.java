@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import np.schoolmanagementsystem.Enum.Role;
 
 @Data
 @AllArgsConstructor
@@ -30,6 +31,7 @@ public class StudentDto {
     private String userName;
     private String password;
     private  Long parentContact;
+    private Role role;
 
 }
 

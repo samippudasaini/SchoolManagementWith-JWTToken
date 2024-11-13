@@ -1,6 +1,8 @@
 package np.schoolmanagementsystem.service.Impl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.Mapper.StudentMapper;
 import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.entity.Student;
@@ -35,10 +37,22 @@ public class StudentServiceImpl implements StudentService {
 //    }
 
     @Override
-    public StudentDto updateStudent(StudentDto studentDto, Long studentId) {
-        Student student=StudentMapper.mapToStudent(studentDto);
-        Student updateStudent=studentRepository.save(student);
-        return StudentMapper.mapToStudentDto(updateStudent);
+    public StudentDto updateStudent(StudentDto studentDto, Long studentId, HttpSession session) {
+
+//    its for session and role divide
+//        String roleName = (String) session.getAttribute("role");
+//        System.out.println(roleName);
+//        Role role = Role.valueOf(roleName);
+
+//        if (Role.ADMIN.equals(role))
+        {
+            Student student=StudentMapper.mapToStudent(studentDto);
+            Student updateStudent=studentRepository.save(student);
+            return StudentMapper.mapToStudentDto(updateStudent);
+        }
+//        else {
+//            throw new RuntimeException("Only Admin can update student.");
+//        }
     }
 
     @Override
@@ -75,6 +89,7 @@ public class StudentServiceImpl implements StudentService {
 
 
         Student student=StudentMapper.mapToStudent(studentDto);
+            student.setRole(Role.STUDENT);
         Student savedStudent=studentRepository.save(student);
         return StudentMapper.mapToStudentDto(savedStudent);
 

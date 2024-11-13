@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.controller;
 
 
+import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class StudentController {
 
 
     @PutMapping("/{studentId}")
-    public ResponseEntity<StudentDto> updateStudent( @PathVariable Long studentId,@RequestBody StudentDto studentDto)
+    public ResponseEntity<StudentDto> updateStudent( @PathVariable Long studentId,@RequestBody StudentDto studentDto, HttpSession session)
     {
-        StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId);
+        StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId, session);
         return new ResponseEntity<>(updatedStudentDto, HttpStatus.OK);
     }
 
@@ -56,11 +57,17 @@ public class StudentController {
 
 
 @PostMapping("/login")
-    public ResponseEntity<String> studentLogin(@RequestBody StudentDto studentDto)
+    public ResponseEntity<String> studentLogin(@RequestBody StudentDto studentDto, HttpSession session)
 {
 
         String userName=studentDto.getUserName();
         String password=studentDto.getPassword();
+
+//        session create
+
+//        session.setAttribute("id",studentDto.getStudentId());
+//        session.setAttribute("role",studentDto.getRole());
+//        session.setAttribute(studentId);
 //        return new ResponseEntity<>(studentService.studentLogin(userName, password), HttpStatus.OK);
     if(studentService.studentLogin(userName,password)){
         return ResponseEntity.ok("Login Successful");
