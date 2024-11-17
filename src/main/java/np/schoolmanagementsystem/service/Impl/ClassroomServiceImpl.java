@@ -1,5 +1,6 @@
 package np.schoolmanagementsystem.service.Impl;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import np.schoolmanagementsystem.Mapper.ClassroomMapper;
@@ -9,8 +10,6 @@ import np.schoolmanagementsystem.repository.ClassroomRepository;
 import np.schoolmanagementsystem.service.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,62 +17,58 @@ import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ClassroomServiceImpl implements ClassroomService {
 
-    @Autowired
-     private ClassroomRepository classroomRepository;
-
-    public ClassroomServiceImpl(ClassroomRepository classroomRepository) {
-        this.classroomRepository = classroomRepository;
-    }
+   @Autowired
+    private ClassroomRepository classroomRepository;
 
 
     @Override
 
-    public ClassroomDto addClassroom(ClassroomDto classroomDto)
-    {
-        Optional<Classroom> existingclass=classroomRepository.findByid(classroomDto.getId());
-        if(existingclass.isPresent()){
-            throw new RuntimeException("Classroom already exists");
-        }
-        Classroom classroom= ClassroomMapper.mapToClassroom(classroomDto);
-        Classroom savedClassroom=classroomRepository.save(classroom);
+    public ClassroomDto addClassroom(ClassroomDto classroomDto) {
+//        Optional<Classroom> existingclass = classroomRepository.findById(classroomDto.getClassroomId());
+//        if (existingclass.isPresent()) {
+//            throw new RuntimeException("Classroom already exists");
+//        }
+        Classroom classroom = ClassroomMapper.mapToClassroom(classroomDto);
+        Classroom savedClassroom = classroomRepository.save(classroom);
         return ClassroomMapper.mapToClassroomDto(savedClassroom);
     }
 
     @Override
     public List<ClassroomDto> getAllClassrooms() {
-        List<Classroom> classrooms=classroomRepository.findAll();
+        List<Classroom> classrooms = classroomRepository.findAll();
         return classrooms.stream().map(ClassroomMapper::mapToClassroomDto).collect(Collectors.toList());
 
     }
 
     @Override
 
-    public ClassroomDto getClassroomById(Long id) {
-        Classroom classroom=classroomRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("classroom not found"));
+    public ClassroomDto getClassroomById(Long ClassroomId) {
+        Classroom classroom = classroomRepository.findById(ClassroomId)
+                .orElseThrow(() -> new RuntimeException("classroom not found"));
 
         return ClassroomMapper.mapToClassroomDto(classroom);
     }
 
     @Override
-    public ClassroomDto updateClassroom(ClassroomDto classroomDto, Long id) {
-        Optional<Classroom> existsClassroom=classroomRepository.findByid(classroomDto.getId());
-        if(!existsClassroom.isPresent()){
+    public ClassroomDto updateClassroom(ClassroomDto classroomDto, Long ClassroomId) {
+        Optional<Classroom> existsClassroom = classroomRepository.findById(classroomDto.getClassroomId());
+        if (!existsClassroom.isPresent()) {
             throw new RuntimeException("Classroom not found");
         }
-        Classroom classroom=ClassroomMapper.mapToClassroom(classroomDto);
-        Classroom savedClassroom=classroomRepository.save(classroom);
+        Classroom classroom = ClassroomMapper.mapToClassroom(classroomDto);
+        Classroom savedClassroom = classroomRepository.save(classroom);
 
         return ClassroomMapper.mapToClassroomDto(savedClassroom);
     }
 
     @Override
-    public ClassroomDto deleteClassroom(Long id) {
-        Classroom classroom=classroomRepository.findByid(id)
-                .orElseThrow(()-> new RuntimeException("classroom not found"));
+    public ClassroomDto deleteClassroom(Long ClassroomId) {
+        Classroom classroom = classroomRepository.findById(ClassroomId)
+                .orElseThrow(() -> new RuntimeException("classroom not found"));
         classroomRepository.delete(classroom);
         return ClassroomMapper.mapToClassroomDto(classroom);
     }

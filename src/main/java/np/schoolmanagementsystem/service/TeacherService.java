@@ -6,9 +6,14 @@ import java.util.List;
 
 public interface TeacherService {
     TeacherDto teacherRegistration(TeacherDto teacherDto);
+
     boolean teacherLogin(String email, String password);
-    TeacherDto teacherUpdate(TeacherDto teacherDto,Long teacherId);
+
+    TeacherDto teacherUpdate(TeacherDto teacherDto, Long teacherId);
+
     TeacherDto teacherDelete(Long id);
+
     TeacherDto getTeacherById(Long teacherId);
+
     List<TeacherDto> getAllTeachers();
 }

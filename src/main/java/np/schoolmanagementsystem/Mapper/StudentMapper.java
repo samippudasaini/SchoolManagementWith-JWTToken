@@ -8,29 +8,27 @@ import java.util.ArrayList;
 
 
 public class StudentMapper {
-    public static Student mapToStudent(StudentDto studentDto)
-    {
-       Student student =new Student(
-               studentDto.getStudentId(),
-               studentDto.getFirstName(),
-               studentDto.getMiddleName(),
-               studentDto.getLastName(),
-               studentDto.getEmail(),
-               studentDto.getPhone_no(),
-               studentDto.getGender(),
-               studentDto.getAddress(),
-               studentDto.getEnrollmentDate(),
-               studentDto.getGrade(),
-               studentDto.getParentContact(),
-               studentDto.getPassword(),
-               studentDto.getUserName(),
-               studentDto.getRole(),
-               new Classroom()
-       );
-       return student;
+    public static Student mapToStudent(StudentDto studentDto) {
+        Student student = new Student(
+                studentDto.getStudentId(),
+                studentDto.getFirstName(),
+                studentDto.getMiddleName(),
+                studentDto.getLastName(),
+                studentDto.getEmail(),
+                studentDto.getPhone_no(),
+                studentDto.getGender(),
+                studentDto.getAddress(),
+                studentDto.getEnrollmentDate(),
+                studentDto.getGrade(),
+                studentDto.getParentContact(),
+                studentDto.getPassword(),
+                studentDto.getUserName(),
+                studentDto.getRole()
+        );
+        return student;
     }
 
-    public static StudentDto mapToStudentDto(Student student){
+    public static StudentDto mapToStudentDto(Student student) {
         StudentDto studentDto = new StudentDto(
                 student.getStudentId(),
                 student.getFirstName(),

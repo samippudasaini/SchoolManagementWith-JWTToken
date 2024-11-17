@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 public class ClassroomDto {
 
-    private Long id;
-    private Long room_No;
+        private Long classroomId;
+    private Long roomNo;
     private String grade;
 }

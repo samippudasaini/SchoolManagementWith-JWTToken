@@ -21,24 +21,28 @@ public class ClassroomController {
     }
 
     @PostMapping("/add")
+
     public ResponseEntity<ClassroomDto> addClassroom(@RequestBody ClassroomDto classroomDto) {
+        if(classroomDto==null){
+            throw new IllegalArgumentException("Classroom filed cannot be null");
+        }
         return new ResponseEntity<>(classroomService.addClassroom(classroomDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<ClassroomDto> getClassroom(@PathVariable Long id){
-        return new ResponseEntity<> (classroomService.getClassroomById(id), HttpStatus.OK);
+    @GetMapping("/get/{ClassroomId}")
+    public ResponseEntity<ClassroomDto> getClassroom(@PathVariable Long ClassroomId){
+        return new ResponseEntity<> (classroomService.getClassroomById(ClassroomId), HttpStatus.OK);
     }
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ClassroomDto> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDto classroomDto)
+    @PutMapping("/update/{ClassroomId}")
+    public ResponseEntity<ClassroomDto> updateClassroom(@PathVariable Long ClassroomId, @RequestBody ClassroomDto classroomDto)
     {
-        ClassroomDto updateclassroomDto=classroomService.updateClassroom(classroomDto,id);
+        ClassroomDto updateclassroomDto=classroomService.updateClassroom(classroomDto,ClassroomId);
         return new ResponseEntity<>(updateclassroomDto, HttpStatus.OK);
 
     }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteClassroom(@PathVariable Long id){
-        classroomService.deleteClassroom(id);
+    @DeleteMapping("/delete/{ClassroomId}")
+    public ResponseEntity<String> deleteClassroom(@PathVariable Long ClassroomId){
+        classroomService.deleteClassroom(ClassroomId);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
     @GetMapping("/getall")

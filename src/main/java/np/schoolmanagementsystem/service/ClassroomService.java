@@ -9,8 +9,12 @@ import java.util.List;
 public interface ClassroomService {
 
     ClassroomDto addClassroom(ClassroomDto classroomDto);
+
     List<ClassroomDto> getAllClassrooms();
-    ClassroomDto getClassroomById(Long id);
-    ClassroomDto updateClassroom(ClassroomDto classroomDto, Long id);
-    ClassroomDto deleteClassroom(Long id);
+
+    ClassroomDto getClassroomById(Long ClasroomId);
+
+    ClassroomDto updateClassroom(ClassroomDto classroomDto, Long ClasroomId);
+
+    ClassroomDto deleteClassroom(Long ClasroomId);
 }

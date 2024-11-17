@@ -1,15 +1,21 @@
 package np.schoolmanagementsystem.service;
 
+import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StaffDto;
 
 import java.util.List;
 
 public interface StaffService {
     StaffDto registerStaff(StaffDto staffDto);
+
     List<StaffDto> getAllStaff();
+
     StaffDto getStaffById(int id);
+
     void updateStaff(StaffDto staffDto);
-    void deleteStaff(int id);
-    boolean loginStaff(String username, String password);
+
+    StaffDto deleteStaff(Long staffId);
+
+    boolean loginStaff(String username, String password, HttpSession session);
 
 }

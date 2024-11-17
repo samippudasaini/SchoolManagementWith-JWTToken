@@ -1,6 +1,8 @@
 package np.schoolmanagementsystem.service.Impl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.Mapper.StaffMapper;
 import np.schoolmanagementsystem.dto.StaffDto;
 import np.schoolmanagementsystem.entity.Staff;
@@ -30,6 +32,8 @@ public class StaffServiceImpl implements StaffService {
             throw new RuntimeException("Staff already exists");
         }
         Staff staff = StaffMapper.mapToStaff(staffDto);
+//        set roll
+        staff.setRole(Role.ADMIN);
         Staff savedStaff = staffRepository.save(staff);
         return StaffMapper.mapToStaffDto(savedStaff);
     }
@@ -50,18 +54,21 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void deleteStaff(int id) {
+    public StaffDto deleteStaff(Long staffId) {
+        Staff staff = staffRepository.findById(staffId)
+                .orElseThrow(() -> new RuntimeException("Staff not found"));
+        staffRepository.delete(staff);
 
+        return StaffMapper.mapToStaffDto(staff);
     }
 
     @Override
-    public boolean loginStaff(String username, String password) {
+    public boolean loginStaff(String username, String password, HttpSession session) {
         Optional<Staff> staff = staffRepository.findByUserName(username);
+        Staff staff1 = staff.get();
         if (!staff.isPresent()) {
             throw new RuntimeException("Staff not found");
-        }
-        else{
-            Staff staff1 = staff.get();
+        } else {
             if (!staff1.getUserName().equals(username)) {
                 throw new RuntimeException("Wrong username or password");
             }
@@ -69,6 +76,9 @@ public class StaffServiceImpl implements StaffService {
                 throw new RuntimeException("Wrong password");
             }
         }
+
+        session.setAttribute("Id", staff1.getStaffId());
+        session.setAttribute("Role", staff1.getRole().name());
         return true;
     }
 }

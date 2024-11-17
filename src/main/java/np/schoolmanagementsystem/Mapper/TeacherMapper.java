@@ -20,8 +20,9 @@ public class TeacherMapper {
                 teacherDto.getGrade(),
                 teacherDto.getUserName(),
                 teacherDto.getPassword(),
-                new ArrayList<Subject>(),
-                null
+              teacherDto.getSubject(),
+                teacherDto.getClassroom()
+
 
         );
         return teacher;
@@ -37,7 +38,9 @@ public class TeacherMapper {
                 teacher.getSubjectName(),
                 teacher.getGrade(),
                 teacher.getUserName(),
-                teacher.getPassword()
+                teacher.getPassword(),
+                teacher.getClassroom(),
+                teacher.getSubjects()
         );
         return teacherDto;
     }
