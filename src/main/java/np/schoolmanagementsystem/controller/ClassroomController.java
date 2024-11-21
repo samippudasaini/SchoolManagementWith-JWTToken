@@ -1,11 +1,13 @@
 package np.schoolmanagementsystem.controller;
 
 
+import np.schoolmanagementsystem.CustomExcaption.CustomIlligalArgumentException;
 import np.schoolmanagementsystem.dto.ClassroomDto;
 import np.schoolmanagementsystem.service.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +22,12 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
 
     public ResponseEntity<ClassroomDto> addClassroom(@RequestBody ClassroomDto classroomDto) {
         if(classroomDto==null){
-            throw new IllegalArgumentException("Classroom filed cannot be null");
+            throw new CustomIlligalArgumentException("Classroom filed cannot be null");
         }
         return new ResponseEntity<>(classroomService.addClassroom(classroomDto), HttpStatus.CREATED);
     }
@@ -33,6 +36,8 @@ public class ClassroomController {
     public ResponseEntity<ClassroomDto> getClassroom(@PathVariable Long ClassroomId){
         return new ResponseEntity<> (classroomService.getClassroomById(ClassroomId), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update/{ClassroomId}")
     public ResponseEntity<ClassroomDto> updateClassroom(@PathVariable Long ClassroomId, @RequestBody ClassroomDto classroomDto)
     {
@@ -40,11 +45,13 @@ public class ClassroomController {
         return new ResponseEntity<>(updateclassroomDto, HttpStatus.OK);
 
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{ClassroomId}")
     public ResponseEntity<String> deleteClassroom(@PathVariable Long ClassroomId){
         classroomService.deleteClassroom(ClassroomId);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getall")
     public ResponseEntity<List<ClassroomDto>> getAllClassrooms(){
         return new ResponseEntity<>(classroomService.getAllClassrooms(), HttpStatus.OK);

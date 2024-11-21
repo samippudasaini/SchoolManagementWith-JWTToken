@@ -46,13 +46,12 @@ public class Staff {
     @Column(name = "staff_Salary")
     private Double salary;
 
-    @Column(name = "Admin_User_Name")
+    @Column(name = "User_Name")
     private String userName;
 
-    @Column(name = "Admin_Password")
+    @Column(name = "Password")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 }

@@ -3,10 +3,10 @@ package np.schoolmanagementsystem.controller;
 
 import np.schoolmanagementsystem.dto.TeacherDto;
 import np.schoolmanagementsystem.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/teacher")
@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public class TeacherController {
 
+    @Autowired
     TeacherService teacherService;
 
     public TeacherController(TeacherService teacherService) {
@@ -32,7 +33,7 @@ public class TeacherController {
         return ResponseEntity.ok(updateTeacherDto);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<TeacherDto> teacherDelete(@PathVariable Long id) {
         TeacherDto deleteTeacher = teacherService.teacherDelete(id);
@@ -46,13 +47,14 @@ public class TeacherController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> teacherLogin(@RequestBody TeacherDto teacherDto) {
-        String userName = teacherDto.getUserName();
-        String password = teacherDto.getPassword();
-        if (teacherService.teacherLogin(userName, password)) {
-            return ResponseEntity.ok("success login");
-        }
-        return ResponseEntity.ok("fail");
+    public String teacherLogin(@RequestBody TeacherDto teacherDto) {
+//        String userName = teacherDto.getUserName();
+//        String password = teacherDto.getPassword();
+//        if (teacherService.teacherLogin(userName, password)) {
+//            return ResponseEntity.ok("success login");
+//        }
+        return teacherService.verify(teacherDto);
+//        return ResponseEntity.ok("fail");
     }
 }
 

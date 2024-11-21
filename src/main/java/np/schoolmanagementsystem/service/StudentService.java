@@ -2,7 +2,6 @@ package np.schoolmanagementsystem.service;
 
 import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StudentDto;
-import np.schoolmanagementsystem.entity.Student;
 import org.springframework.stereotype.Service;
 
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 public interface StudentService {
     //    StudentDto addStudent(StudentDto studentDto);
-    StudentDto updateStudent(StudentDto studentDto, Long studentId, HttpSession session);
+    StudentDto updateStudent(StudentDto studentDto, Long studentId);
 
     StudentDto getStudentById(Long id);
 
@@ -23,4 +22,5 @@ public interface StudentService {
 
     boolean studentLogin(String userName, String password);
 
+    String verify(StudentDto studentDto);
 }

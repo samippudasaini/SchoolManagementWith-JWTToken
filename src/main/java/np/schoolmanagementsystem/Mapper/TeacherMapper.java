@@ -20,10 +20,9 @@ public class TeacherMapper {
                 teacherDto.getGrade(),
                 teacherDto.getUserName(),
                 teacherDto.getPassword(),
-              teacherDto.getSubject(),
-                teacherDto.getClassroom()
-
-
+                teacherDto.getRole()
+//                teacherDto.getSubject(),
+//                teacherDto.getClassroom()
         );
         return teacher;
     }
@@ -39,8 +38,11 @@ public class TeacherMapper {
                 teacher.getGrade(),
                 teacher.getUserName(),
                 teacher.getPassword(),
-                teacher.getClassroom(),
-                teacher.getSubjects()
+                teacher.getRole()
+//                teacher.getClassroom(),
+//                teacher.getSubjects(),
+
+
         );
         return teacherDto;
     }

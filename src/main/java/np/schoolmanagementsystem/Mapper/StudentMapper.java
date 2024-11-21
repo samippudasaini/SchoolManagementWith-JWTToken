@@ -21,8 +21,8 @@ public class StudentMapper {
                 studentDto.getEnrollmentDate(),
                 studentDto.getGrade(),
                 studentDto.getParentContact(),
-                studentDto.getPassword(),
                 studentDto.getUserName(),
+                studentDto.getPassword(),
                 studentDto.getRole()
         );
         return student;
@@ -40,8 +40,8 @@ public class StudentMapper {
                 student.getAddress(),
                 student.getEnrollmentDate(),
                 student.getGrade(),
-                student.getPassword(),
                 student.getUserName(),
+                student.getPassword(),
                 student.getParentContact(),
                 student.getRole()
 

@@ -16,4 +16,6 @@ public interface TeacherService {
     TeacherDto getTeacherById(Long teacherId);
 
     List<TeacherDto> getAllTeachers();
+
+    String verify(TeacherDto teacherDto);
 }

@@ -63,13 +63,6 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//@ManyToMany
-//@JoinTable(
-//            name="StudentsTable",
-//            joinColumns = @JoinColumn(name="studentId"),
-//            inverseJoinColumns = @JoinColumn(name="id")
-//
-//    )
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id", nullable = true)
@@ -91,4 +84,9 @@ public class Student {
         this.password = password;
         this.role = role;
     }
+
+    public Student get() {
+        return this;
+    }
+
 }

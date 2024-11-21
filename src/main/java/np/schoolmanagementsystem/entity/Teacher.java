@@ -3,6 +3,7 @@ package np.schoolmanagementsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import np.schoolmanagementsystem.Enum.Role;
 
 import java.util.List;
 
@@ -47,26 +48,18 @@ public class Teacher {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "Teacher_subject", // Name of the join table
-//            joinColumns = @JoinColumn(name = "teacherId"),
-//            inverseJoinColumns = @JoinColumn(name = "subjectId")
-//    )
-//    private List<Subject> subjects;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name="subjectId")
     private Subject subjects;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "classroomid")
+    @ManyToOne()
     private Classroom classroom;
 
     public Teacher(Long teacherId, String firstName, String middleName, String lastName, String email
-            , Long phone, String subjectName, String grade, String userName, String password,
-                   Subject subjects, Classroom classroom) {
+            , Long phone, String subjectName, String grade, String userName, String password, Role role) {
         this.teacherId = teacherId;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -77,8 +70,11 @@ public class Teacher {
         this.grade = grade;
         this.userName = userName;
         this.password = password;
-        this.subjects = subjects;
-        this.classroom = classroom;
+        this.role = role;
+    }
+
+    public Teacher get() {
+        return this;
     }
 }
 

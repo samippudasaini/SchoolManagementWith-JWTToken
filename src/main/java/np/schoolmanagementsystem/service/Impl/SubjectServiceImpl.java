@@ -1,5 +1,6 @@
 package np.schoolmanagementsystem.service.Impl;
 
+import np.schoolmanagementsystem.CustomExcaption.CustomRuntimeException;
 import np.schoolmanagementsystem.dto.SubjectDto;
 import np.schoolmanagementsystem.entity.Subject;
 import np.schoolmanagementsystem.repository.SubjectRepository;
@@ -29,7 +30,7 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDto addSubject(SubjectDto subjectDto) {
         Optional<Subject> existSubject = subjectRepository.findById(subjectDto.getSubjectId());
         if (existSubject.isPresent()) {
-            throw new RuntimeException("Subject already exists");
+            throw new CustomRuntimeException("Subject already exists");
         }
 
         Subject subject = new Subject();
@@ -76,7 +77,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public SubjectDto deleteSubject(@PathVariable Long id) {
         Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
+                .orElseThrow(() -> new CustomRuntimeException("Subject not found"));
         subjectRepository.delete(subject);
 
         return null;

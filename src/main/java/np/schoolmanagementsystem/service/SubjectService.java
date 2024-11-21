@@ -15,4 +15,6 @@ public interface SubjectService {
     SubjectDto updateSubject(SubjectDto subjectDto, Long id);
 
     SubjectDto deleteSubject(Long id);
+
+
 }

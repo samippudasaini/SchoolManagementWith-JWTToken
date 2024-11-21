@@ -4,6 +4,7 @@ package np.schoolmanagementsystem.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.entity.Classroom;
 import np.schoolmanagementsystem.entity.Subject;
 
@@ -22,7 +23,9 @@ public class TeacherDto {
     private String grade;
     private String userName;
     private String password;
-    private Classroom classroom;
-    private Subject subject;
+    private Role role;
+//    private Classroom classroom;
+//    private Subject subject;
+
 
 }

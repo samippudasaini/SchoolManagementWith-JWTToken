@@ -1,7 +1,8 @@
 package np.schoolmanagementsystem.service.Impl;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import np.schoolmanagementsystem.Auth.JWTService;
+import np.schoolmanagementsystem.CustomExcaption.CustomRuntimeException;
 import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.Mapper.StaffMapper;
 import np.schoolmanagementsystem.dto.StaffDto;
@@ -9,6 +10,9 @@ import np.schoolmanagementsystem.entity.Staff;
 import np.schoolmanagementsystem.repository.StaffRepository;
 import np.schoolmanagementsystem.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +24,12 @@ public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
 
     @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
     public StaffServiceImpl(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
     }
@@ -29,7 +39,7 @@ public class StaffServiceImpl implements StaffService {
 
         Optional<Staff> existingstaff = staffRepository.findByEmail(staffDto.getEmail());
         if (existingstaff.isPresent()) {
-            throw new RuntimeException("Staff already exists");
+            throw new CustomRuntimeException("Staff already exists");
         }
         Staff staff = StaffMapper.mapToStaff(staffDto);
 //        set roll
@@ -56,29 +66,39 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffDto deleteStaff(Long staffId) {
         Staff staff = staffRepository.findById(staffId)
-                .orElseThrow(() -> new RuntimeException("Staff not found"));
+                .orElseThrow(() -> new CustomRuntimeException("Staff not found"));
         staffRepository.delete(staff);
 
         return StaffMapper.mapToStaffDto(staff);
     }
 
     @Override
-    public boolean loginStaff(String username, String password, HttpSession session) {
-        Optional<Staff> staff = staffRepository.findByUserName(username);
-        Staff staff1 = staff.get();
-        if (!staff.isPresent()) {
-            throw new RuntimeException("Staff not found");
+    public boolean loginStaff(String username, String password) {
+     Staff staff = staffRepository.findByUserName(username);
+//        Staff staff1 = staff.get();
+        if (staff == null) {
+            throw new CustomRuntimeException("Staff not found");
         } else {
-            if (!staff1.getUserName().equals(username)) {
-                throw new RuntimeException("Wrong username or password");
+            if (!staff.getUserName().equals(username)) {
+                throw new CustomRuntimeException("Wrong username ");
             }
-            if (!staff1.getPassword().equals(password)) {
-                throw new RuntimeException("Wrong password");
+            if (!staff.getPassword().equals(password)) {
+                throw new CustomRuntimeException("Wrong password");
             }
         }
-
-        session.setAttribute("Id", staff1.getStaffId());
-        session.setAttribute("Role", staff1.getRole().name());
         return true;
+    }
+
+    @Override
+    public String verify(StaffDto staffDto) {
+
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(staffDto
+                        .getUserName(), staffDto.getPassword()));
+        if( authentication.isAuthenticated()){
+            return jwtService.generateToken(staffDto.getUserName());
+        }
+
+return "fail";
     }
 }

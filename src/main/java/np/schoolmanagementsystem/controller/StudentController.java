@@ -7,6 +7,7 @@ import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,17 +21,16 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{studentId}")
     public ResponseEntity<StudentDto> updateStudent(@PathVariable Long studentId,
-                                                    @RequestBody StudentDto studentDto, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String role = (String) session.getAttribute("Role");
-        if ("ADMIN".equals(role)) {
-            StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId, session);
+                                                    @RequestBody StudentDto studentDto) {
+//        HttpSession session = request.getSession(false);
+//        String role = (String) session.getAttribute("Role");
+//        if ("ADMIN".equals(role)) {
+            StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId);
             return new ResponseEntity<>(updatedStudentDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        }
     }
 
     @GetMapping("/{studentId}")
@@ -40,36 +40,43 @@ public class StudentController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<StudentDto> deleteStudent(@PathVariable Long id, HttpSession session) {
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id, HttpSession session) {
         StudentDto studentDto = studentService.deleteStudentById(id, session);
-        return new ResponseEntity<>(studentDto, HttpStatus.OK);
+        return  ResponseEntity.ok("Student deleted successfully.");
     }
 
-    @PostMapping("/{register}")
+    @PostMapping("/register")
     public ResponseEntity<StudentDto> studentRegistration(@RequestBody StudentDto studentDto) {
 
-        return new ResponseEntity<>(studentService.studentRegistration(studentDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentService
+                .studentRegistration(studentDto), HttpStatus.CREATED);
+
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> studentLogin(@RequestBody StudentDto studentDto, HttpSession session) {
+    public String studentLogin(@RequestBody StudentDto studentDto, HttpSession session) {
 
-        String userName = studentDto.getUserName();
-        String password = studentDto.getPassword();
-
-
-        if (studentService.studentLogin(userName, password)) {
-            //        session create
-            session.setAttribute("id", studentDto.getStudentId());
-            session.setAttribute("role", studentDto.getRole());
-            return ResponseEntity.ok("Login Successful");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
-        }
+//        String userName = studentDto.getUserName();
+//        String password = studentDto.getPassword();
+//
+//
+//        if (studentService.studentLogin(userName, password)) {
+//            //        session create
+////            session.setAttribute("id", studentDto.getStudentId());
+////            session.setAttribute("role", studentDto.getRole());
+//            return ResponseEntity.ok("Login successful.");
+//        }
+//        else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
+//        }
+////        return studentService.verify(studentDto);
+            return studentService.verify(studentDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getall")
     public ResponseEntity<List<StudentDto>> getAllStudents() {
         List<StudentDto> students = studentService.getAllStudents();
