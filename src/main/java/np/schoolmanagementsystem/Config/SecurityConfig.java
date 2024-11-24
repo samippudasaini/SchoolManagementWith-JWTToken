@@ -64,12 +64,15 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("api/students/register")
                         .permitAll()
-                        .requestMatchers("api/teacher/register")
+                        .requestMatchers("api/teacher/register", "api/fee/savefee","api/fee/delete/{feeId}",
+                                "api/fee/feeupdate/{feeId}")
                         .permitAll()
                         .requestMatchers("api/teacher/login")
                         .permitAll()
                         .requestMatchers("api/staff/login")
                         .permitAll()
+//                        .requestMatchers("api/fee/savefee")
+//                        .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session->

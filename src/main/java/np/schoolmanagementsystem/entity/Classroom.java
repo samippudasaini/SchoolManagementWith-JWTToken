@@ -26,7 +26,6 @@ public class Classroom {
     @Column(name = "grade")
     private String grade;
 
-//
 //       Relation or mapping between Classroom and Teacher
     @OneToMany(mappedBy = "classroom")
     private List<Teacher> teachers;

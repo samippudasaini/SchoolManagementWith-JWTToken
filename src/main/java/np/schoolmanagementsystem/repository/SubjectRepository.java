@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    Optional<Subject> findById(Long id);
+public interface SubjectRepository extends JpaRepository<Subject, String> {
+    Optional<Subject> findById(String id);
 }

@@ -68,7 +68,13 @@ public class Student {
     @JoinColumn(name = "classroom_id", nullable = true)
     private Classroom classroom;
 
-    public Student(Long studentId, String firstName, String middleName, String lastName, String email, Long phone_no, String gender, String address, Date enrollmentDate, String grade, Long parentContact, String userName, String password, Role role) {
+
+    @OneToMany(mappedBy = "student")
+    private List<Fee> fee;
+
+    public Student(Long studentId, String firstName, String middleName, String lastName, String email,
+                   Long phone_no, String gender, String address, Date enrollmentDate, String grade,
+                   Long parentContact, String userName, String password, Role role) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -85,7 +91,18 @@ public class Student {
         this.role = role;
     }
 
-    public Student get() {
+
+
+
+//    this constructor are use studentId use in fee table
+
+    public Student(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public Student get()
+    {
+
         return this;
     }
 

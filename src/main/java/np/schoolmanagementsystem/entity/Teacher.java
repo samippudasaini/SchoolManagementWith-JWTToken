@@ -53,7 +53,7 @@ public class Teacher {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Subject subjects;
+    private Subject  subjects;
 
     @ManyToOne()
     private Classroom classroom;

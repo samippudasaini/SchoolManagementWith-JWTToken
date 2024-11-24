@@ -44,14 +44,14 @@ public class GlobalExceptionHandler  {
     response.put("error","Bad Request");
     return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
   }
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String,Object>> exception(Exception ex){
-    Map<String,Object> response = new HashMap<>();
-    response.put("timestamp", LocalDateTime.now());
-    response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-    response.put("error","Internal Server Error");
-    response.put("messsage",ex.getMessage());
-    return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
-
-  }
+//  @ExceptionHandler(Exception.class)
+//  public ResponseEntity<Map<String,Object>> exception(Exception ex){
+//    Map<String,Object> response = new HashMap<>();
+//    response.put("timestamp", LocalDateTime.now());
+//    response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+//    response.put("error","Internal Server Error");
+//    response.put("messsage",ex.getMessage());
+//    return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+//
+//  }
 }

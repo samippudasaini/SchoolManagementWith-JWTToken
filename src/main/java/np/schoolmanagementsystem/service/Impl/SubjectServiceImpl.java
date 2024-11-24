@@ -35,8 +35,10 @@ public class SubjectServiceImpl implements SubjectService {
 
         Subject subject = new Subject();
         subject.setSubjectName(subjectDto.getSubjectName());
-        subject = subjectRepository.save(subject);
-        subjectDto.setSubjectId(subject.getSubjectId());
+        subject.setSubjectId(subjectDto.getSubjectId());
+//        subject =
+                subjectRepository.save(subject);
+
         return subjectDto;
     }
 
@@ -53,7 +55,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDto getSubjectById(Long SubjectId) {
+    public SubjectDto getSubjectById(String  SubjectId) {
         Optional<Subject> existSubject = subjectRepository.findById(SubjectId);
         if (existSubject.isPresent()) {
             Subject subject = existSubject.get();
@@ -63,19 +65,20 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 
-    public SubjectDto updateSubject(SubjectDto subjectDto, Long id) {
+    public SubjectDto updateSubject(SubjectDto subjectDto, String id) {
         if (subjectRepository.existsById(id)) {
             Subject subject = subjectRepository.findById(id).get();
-            subject.setSubjectName(subjectDto.getSubjectName());
-            subject = subjectRepository.save(subject);
-            subjectDto.setSubjectId(subject.getSubjectId());
+//            subject.setSubjectName(subjectDto.getSubjectName());
+//            subject =
+                    subjectRepository.save(subject);
+//            subjectDto.setSubjectId(subject.getSubjectId());
             return subjectDto;
         }
         return null;
     }
 
     @Override
-    public SubjectDto deleteSubject(@PathVariable Long id) {
+    public SubjectDto deleteSubject(@PathVariable String id) {
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new CustomRuntimeException("Subject not found"));
         subjectRepository.delete(subject);

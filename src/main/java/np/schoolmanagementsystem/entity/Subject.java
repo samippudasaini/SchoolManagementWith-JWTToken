@@ -16,9 +16,11 @@ import java.util.List;
 public class Subject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_Id", unique = true, nullable = false)
-    private Long subjectId;
+//    @GeneratedValue(strategy =GenerationType.AUTO)
+//    @Column(name = "subject_Id", unique = true, nullable = false)
+//    private Long subjectId;
+    @Column(name = "subject_id")
+    private String subjectId;
 
 
     @Column(name = "subject_Name")
@@ -34,6 +36,6 @@ public class Subject {
 //    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
 //    private List<Teacher> teachers;
 
-    @ManyToOne()
+    @OneToOne()
     private Teacher teachers;
 }

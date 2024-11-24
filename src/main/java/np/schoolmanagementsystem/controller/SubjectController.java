@@ -30,21 +30,21 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectDto> getSubjectById(@PathVariable Long id) {
+    public ResponseEntity<SubjectDto> getSubjectById(@PathVariable String id) {
         SubjectDto subjectDto = subjectService.getSubjectById(id);
         return ResponseEntity.ok(subjectDto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<SubjectDto> updateSubject(@RequestBody SubjectDto subjectDto, @PathVariable Long id) {
+    public ResponseEntity<SubjectDto> updateSubject(@RequestBody SubjectDto subjectDto, @PathVariable String id) {
         SubjectDto subjectDto1 = subjectService.updateSubject(subjectDto, id);
         return ResponseEntity.ok(subjectDto1);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SubjectDto> deleteSubject(@PathVariable Long id) {
+    public ResponseEntity<SubjectDto> deleteSubject(@PathVariable String id) {
         subjectService.deleteSubject(id);
         return ResponseEntity.ok().build();
     }
