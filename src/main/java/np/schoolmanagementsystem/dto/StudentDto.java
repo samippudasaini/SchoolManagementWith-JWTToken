@@ -32,6 +32,7 @@ public class StudentDto {
     private String password;
     private  Long parentContact;
     private Role role;
+    private Long classroomId;
 
 }
 

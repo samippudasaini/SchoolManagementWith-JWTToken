@@ -10,18 +10,22 @@ import org.springframework.web.bind.annotation.Mapping;
 public class FeeMapper {
     public static Fee mapToFee(FeeDto feeDto) {
         Fee fee = new Fee(
-        feeDto.getFeeId(),
-        feeDto.getTotalFee(),
-        feeDto.getPaidFee(),
-        feeDto.getRemainingFee(),
-        feeDto.getFeeType(),
-        feeDto.getPaidDate(),
-        feeDto.getDescription(),
-        feeDto.getStudentId() != null ? new Student(feeDto.getStudentId()) : null
+                feeDto.getFeeId(),
+                feeDto.getTotalFee(),
+                feeDto.getPaidFee(),
+                feeDto.getRemainingFee(),
+                feeDto.getFeeType(),
+                feeDto.getPaidDate(),
+                feeDto.getDescription(),
+                feeDto.getDueDate(),
+                feeDto.getDiscountAmount(),
+                feeDto.getFineAmount(),
+                feeDto.getStudentId() != null ? new Student(feeDto.getStudentId()) : null
         );
         return fee;
     }
-    public static FeeDto mapToFeeDto(Fee fee){
+
+    public static FeeDto mapToFeeDto(Fee fee) {
         FeeDto feeDto = new FeeDto(
                 fee.getFeeId(),
                 fee.getTotalFee(),
@@ -29,9 +33,12 @@ public class FeeMapper {
                 fee.getRemainingFee(),
                 fee.getFeeType(),
                 fee.getDescription(),
+                fee.getDueDate(),
+                fee.getDiscountAmount(),
+                fee.getFineAmount(),
                 fee.getStudent() != null ? fee.getStudent().getStudentId() : null,
                 fee.getPaidDate()
-                );
+        );
         return feeDto;
     }
 

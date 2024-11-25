@@ -43,7 +43,7 @@ public class StaffServiceImpl implements StaffService {
         }
         Staff staff = StaffMapper.mapToStaff(staffDto);
 //        set roll
-        staff.setRole(Role.ADMIN);
+//        staff.setRole(Role.ADMIN);
         Staff savedStaff = staffRepository.save(staff);
         return StaffMapper.mapToStaffDto(savedStaff);
     }
@@ -73,13 +73,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public boolean loginStaff(String username, String password) {
-     Staff staff = staffRepository.findByUserName(username);
+    public boolean loginStaff(String userName, String password) {
+     Staff staff = staffRepository.findByUserName(userName);
 //        Staff staff1 = staff.get();
         if (staff == null) {
             throw new CustomRuntimeException("Staff not found");
         } else {
-            if (!staff.getUserName().equals(username)) {
+            if (!staff.getUserName().equals(userName)) {
                 throw new CustomRuntimeException("Wrong username ");
             }
             if (!staff.getPassword().equals(password)) {

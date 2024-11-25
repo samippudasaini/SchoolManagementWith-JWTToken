@@ -9,6 +9,12 @@ import java.util.ArrayList;
 
 public class TeacherMapper {
     public static Teacher mapToTeacher(TeacherDto teacherDto) {
+        Classroom classroom = new Classroom();
+        classroom.setClassroomId(teacherDto.getClassroomId());
+
+        Subject subject = new Subject();
+        subject.setSubjectId(teacherDto.getSubjectId());
+
         Teacher teacher = new Teacher(
                 teacherDto.getTeacherId(),
                 teacherDto.getFirstName(),
@@ -20,9 +26,12 @@ public class TeacherMapper {
                 teacherDto.getGrade(),
                 teacherDto.getUserName(),
                 teacherDto.getPassword(),
-                teacherDto.getRole()
-//                teacherDto.getSubject(),
-//                teacherDto.getClassroom()
+                teacherDto.getRole(),
+                subject,
+                classroom
+
+
+
         );
         return teacher;
     }
@@ -38,11 +47,9 @@ public class TeacherMapper {
                 teacher.getGrade(),
                 teacher.getUserName(),
                 teacher.getPassword(),
-                teacher.getRole()
-//                teacher.getClassroom(),
-//                teacher.getSubjects(),
-
-
+                teacher.getRole(),
+                teacher.getClassroom() != null ? teacher.getClassroom().getClassroomId() : null,
+                teacher.getSubjects() != null ? teacher.getSubjects().getSubjectId(): null
         );
         return teacherDto;
     }

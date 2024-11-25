@@ -23,8 +23,9 @@ public class StaffPrincipal implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + getRole()));
     }
 
-    private Role getRole(){
+    private Role getRole() {
         return staff.getRole();
+
     }
 
     @Override

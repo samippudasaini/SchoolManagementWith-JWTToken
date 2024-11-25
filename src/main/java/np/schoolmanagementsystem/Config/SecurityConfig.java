@@ -57,15 +57,15 @@ public class SecurityConfig {
 //          return http.build();
 
 
-       return http
-                .csrf(customizer->customizer.disable())
-                .authorizeHttpRequests(request->request
+        return http
+                .csrf(customizer -> customizer.disable())
+                .authorizeHttpRequests(request -> request
                         .requestMatchers("api/students/login")
                         .permitAll()
                         .requestMatchers("api/students/register")
                         .permitAll()
-                        .requestMatchers("api/teacher/register", "api/fee/savefee","api/fee/delete/{feeId}",
-                                "api/fee/feeupdate/{feeId}")
+                        .requestMatchers("api/teacher/register", "api/fee/savefee", "api/fee/delete/{feeId}",
+                                "api/fee/feeupdate/{feeId}","api/staff/add")
                         .permitAll()
                         .requestMatchers("api/teacher/login")
                         .permitAll()
@@ -75,9 +75,9 @@ public class SecurityConfig {
 //                        .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->
+                .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
 
@@ -120,7 +120,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
-           return config.getAuthenticationManager();
+        return config.getAuthenticationManager();
     }
 
 

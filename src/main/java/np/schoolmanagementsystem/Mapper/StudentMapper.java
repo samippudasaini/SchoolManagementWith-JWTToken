@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class StudentMapper {
     public static Student mapToStudent(StudentDto studentDto) {
+
+        Classroom classroom = new Classroom();
+        classroom.setClassroomId(studentDto.getClassroomId());
+
         Student student = new Student(
                 studentDto.getStudentId(),
                 studentDto.getFirstName(),
@@ -23,7 +27,10 @@ public class StudentMapper {
                 studentDto.getParentContact(),
                 studentDto.getUserName(),
                 studentDto.getPassword(),
-                studentDto.getRole()
+                studentDto.getRole(),
+                classroom
+
+
         );
         return student;
     }
@@ -43,7 +50,10 @@ public class StudentMapper {
                 student.getUserName(),
                 student.getPassword(),
                 student.getParentContact(),
-                student.getRole()
+                student.getRole(),
+                student.getClassroom().getClassroomId()
+
+
 
         );
         return studentDto;

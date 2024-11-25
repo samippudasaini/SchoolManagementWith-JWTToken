@@ -65,7 +65,7 @@ public class Student {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "classroom_id", nullable = true)
+//    @JoinColumn(name = "classroom_id", nullable = true)
     private Classroom classroom;
 
 
@@ -74,7 +74,7 @@ public class Student {
 
     public Student(Long studentId, String firstName, String middleName, String lastName, String email,
                    Long phone_no, String gender, String address, Date enrollmentDate, String grade,
-                   Long parentContact, String userName, String password, Role role) {
+                   Long parentContact, String userName, String password, Role role,Classroom classroom) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -89,6 +89,7 @@ public class Student {
         this.userName = userName;
         this.password = password;
         this.role = role;
+        this.classroom = classroom;
     }
 
 

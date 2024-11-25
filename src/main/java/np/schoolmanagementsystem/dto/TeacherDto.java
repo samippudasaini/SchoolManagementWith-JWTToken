@@ -1,15 +1,15 @@
 package np.schoolmanagementsystem.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.entity.Classroom;
 import np.schoolmanagementsystem.entity.Subject;
 
 @AllArgsConstructor
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 
 public class TeacherDto {
@@ -24,8 +24,9 @@ public class TeacherDto {
     private String userName;
     private String password;
     private Role role;
-//    private Classroom classroom;
-//    private Subject subject;
+    private Long classroomId;
+    private String subjectId;
+
 
 
 }

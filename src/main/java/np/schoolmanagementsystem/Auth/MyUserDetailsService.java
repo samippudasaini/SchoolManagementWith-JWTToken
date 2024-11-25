@@ -25,7 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private TeacherRepository teacherRepository;
     @Autowired
-    private StaffRepository  staffRepository;
+    private StaffRepository staffRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -33,22 +33,22 @@ public class MyUserDetailsService implements UserDetailsService {
         Student student = studentRepository.findByUserName(userName);
 
 
-        if(student != null) {
-            return new StudentPrincipal(student) ;
+        if (student != null) {
+            return new StudentPrincipal(student);
         }
+
+
         Teacher teacher = teacherRepository.findByUserName(userName);
-        if(teacher != null) {
+        if (teacher != null) {
             return new TeacherPrincipal(teacher);
         }
+
+
         Staff staff = staffRepository.findByUserName(userName);
-        if(staff != null) {
-      return new StaffPrincipal(staff);
+        if (staff != null) {
+            return new StaffPrincipal(staff);
         }
         throw new ResourceNotFoundException("User not found.");
 
-
-
     }
-
-
 }

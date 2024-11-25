@@ -7,9 +7,8 @@ import np.schoolmanagementsystem.Enum.Role;
 
 import java.util.List;
 
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
-//@Data
 @Getter
 @Setter
 @Table(name = "Teacher_table")
@@ -55,23 +54,9 @@ public class Teacher {
     @OneToOne(cascade = CascadeType.ALL)
     private Subject  subjects;
 
-    @ManyToOne()
+    @ManyToOne
+//    @JoinColumn(name = "classroomId")
     private Classroom classroom;
-
-    public Teacher(Long teacherId, String firstName, String middleName, String lastName, String email
-            , Long phone, String subjectName, String grade, String userName, String password, Role role) {
-        this.teacherId = teacherId;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.subjectName = subjectName;
-        this.grade = grade;
-        this.userName = userName;
-        this.password = password;
-        this.role = role;
-    }
 
     public Teacher get() {
         return this;
