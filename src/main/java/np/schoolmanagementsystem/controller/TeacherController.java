@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static np.schoolmanagementsystem.ApiUrls.API.*;
+
 @RestController
-@RequestMapping("/api/teacher")
+@RequestMapping(BASE_URL_TEACHER)
 
 
 public class TeacherController {
@@ -21,32 +23,32 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @PostMapping("/register")
+    @PostMapping(REGISTER_TEACHER)
     public ResponseEntity<TeacherDto> teacherRegistration(@RequestBody TeacherDto teacherDto) {
 
         return ResponseEntity.ok(teacherService.teacherRegistration(teacherDto));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping(UPDATE_TEACHER_BY_ID)
     public ResponseEntity<TeacherDto> updateTeacher(@RequestBody TeacherDto teacherDto, @PathVariable Long id) {
         TeacherDto updateTeacherDto = teacherService.teacherUpdate(teacherDto, id);
         return ResponseEntity.ok(updateTeacherDto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<TeacherDto> teacherDelete(@PathVariable Long id) {
+    @DeleteMapping(DELETE_TEACHER_BY_ID)
+    public ResponseEntity<String> teacherDelete(@PathVariable Long id) {
         TeacherDto deleteTeacher = teacherService.teacherDelete(id);
-        return ResponseEntity.ok(deleteTeacher);
+        return  ResponseEntity.ok("delete teacher successfully") ;
     }
 
-    @GetMapping("/get/{teacherId}")
+    @GetMapping(GET_TEACHER_BY_ID)
     public ResponseEntity<TeacherDto> getTeacherById(@PathVariable Long teacherId) {
         TeacherDto teacherDto = teacherService.getTeacherById(teacherId);
         return ResponseEntity.ok(teacherDto);
     }
 
-    @PostMapping("/login")
+    @PostMapping(LOGIN_TEACHER)
     public String teacherLogin(@RequestBody TeacherDto teacherDto) {
 //        String userName = teacherDto.getUserName();
 //        String password = teacherDto.getPassword();

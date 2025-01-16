@@ -21,6 +21,11 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -58,21 +63,20 @@ public class SecurityConfig {
 
 
         return http
+                .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("api/students/login")
                         .permitAll()
                         .requestMatchers("api/students/register")
                         .permitAll()
-                        .requestMatchers("api/teacher/register", "api/fee/savefee", "api/fee/delete/{feeId}",
-                                "api/fee/feeupdate/{feeId}","api/staff/add")
+                        .requestMatchers("api/teachers/register")
+
                         .permitAll()
                         .requestMatchers("api/teacher/login")
                         .permitAll()
-                        .requestMatchers("api/staff/login")
+                        .requestMatchers("/api/staffs/login")
                         .permitAll()
-//                        .requestMatchers("api/fee/savefee")
-//                        .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
@@ -124,4 +128,15 @@ public class SecurityConfig {
     }
 
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Allow all origins
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

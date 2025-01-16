@@ -1,8 +1,8 @@
 package np.schoolmanagementsystem.controller;
 
 
-import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StaffDto;
+import np.schoolmanagementsystem.dto.masterResponse;
 import np.schoolmanagementsystem.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static np.schoolmanagementsystem.ApiUrls.API.*;
+
 @RestController
 
-@RequestMapping("/api/staff")
+@RequestMapping(BASE_URL_STAFF)
 public class StaffController {
 
     @Autowired
@@ -21,34 +23,26 @@ public class StaffController {
     public StaffController(StaffService staffService) {
         this.staffService = staffService;
     }
-
-    @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(ADD_STAFF)
     public ResponseEntity<StaffDto> registerStaff(@RequestBody StaffDto staffDto) {
         return new ResponseEntity<>(staffService.registerStaff(staffDto), HttpStatus.CREATED);
     }
 
 
-    @PostMapping("/login")
-    public String loginStaff(@RequestBody StaffDto staffDto)
+    @PostMapping(LOGIN_STAFF)
+    public ResponseEntity<masterResponse> loginStaff(@RequestBody StaffDto staffDto)
     {
-        String userName = staffDto.getUserName();
-        String password = staffDto.getPassword();
-//
-//        session.setAttribute("id",staffDto.getStaffId());
-//        session.setAttribute("role",staffDto.getRole());
-
-//        if (staffService.loginStaff(userName, password)) {
-//
-//            return ResponseEntity.ok("Login Successful as ADMIN.");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-//        }
-        return staffService.verify(staffDto);
+//        String userName = staffDto.getUserName();
+//        String password = staffDto.getPassword();
+//        return staffService. verify(staffDto);
+        masterResponse masterResponse = staffService.verify(staffDto);
+        return new ResponseEntity<>(masterResponse, HttpStatus.OK);
 
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{staffId}")
+    @DeleteMapping(DELETE_STAFF_BY_ID)
     public ResponseEntity<StaffDto> deleteStaff(@PathVariable Long staffId) {
         StaffDto staffDto = staffService.deleteStaff(staffId);
         return new ResponseEntity<>(staffDto, HttpStatus.OK);

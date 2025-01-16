@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "Classroom_Table")
 public class Classroom {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "classroom_id")
     private Long classroomId;
 
@@ -27,7 +27,7 @@ public class Classroom {
     private String grade;
 
     //       Relation or mapping between Classroom and Teacher
-    @OneToMany(mappedBy = "classroom")
+    @OneToMany(mappedBy = "classroom",cascade = CascadeType.ALL)
     private List<Teacher> teachers;
 
 

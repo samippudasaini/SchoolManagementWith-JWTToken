@@ -8,6 +8,7 @@ public class ClassroomMapper {
     public static Classroom mapToClassroom(ClassroomDto classroomDto) {
         Classroom classroom = new Classroom(
                 classroomDto.getClassroomId(),
+
                 classroomDto.getRoomNo(),
                 classroomDto.getGrade()
         );

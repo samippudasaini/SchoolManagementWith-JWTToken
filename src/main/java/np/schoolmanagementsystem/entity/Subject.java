@@ -36,6 +36,6 @@ public class Subject {
 //    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
 //    private List<Teacher> teachers;
 
-    @OneToOne()
+    @OneToOne(mappedBy="subjects")
     private Teacher teachers;
 }

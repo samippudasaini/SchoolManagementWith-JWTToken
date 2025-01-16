@@ -34,8 +34,8 @@ public class Teacher {
     @Column(name = "phone_Number")
     private Long phone;
 
-    @Column(name = "teach_Subject_Name")
-    private String subjectName;
+//    @Column(name = "teach_Subject_Name")
+//    private String subjectName;
 
 
     @Column(name = "teach_Grade")
@@ -51,7 +51,7 @@ public class Teacher {
     private Role role;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Subject  subjects;
 
     @ManyToOne

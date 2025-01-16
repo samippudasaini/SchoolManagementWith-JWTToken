@@ -57,5 +57,4 @@ public class StaffPrincipal implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
 }

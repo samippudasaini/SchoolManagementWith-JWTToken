@@ -64,7 +64,7 @@ public class Student {
     private Role role;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
 //    @JoinColumn(name = "classroom_id", nullable = true)
     private Classroom classroom;
 
@@ -93,8 +93,6 @@ public class Student {
     }
 
 
-
-
 //    this constructor are use studentId use in fee table
 
     public Student(Long studentId) {
@@ -103,8 +101,6 @@ public class Student {
 
     public Student get()
     {
-
         return this;
     }
-
 }

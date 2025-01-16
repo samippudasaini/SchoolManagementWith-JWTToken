@@ -43,15 +43,15 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
-//       List<Subject> subjects = subjectRepository.findAll();
-//       return subjects.stream()
-//               .map(subject ->new  SubjectDto(
-//                       subject.getSubjectName(),
-//                       subject.getSubjectId()
-//               ))
-//               .collect(Collectors.toList());
+    public List<SubjectDto> getAllSubjects() {
+//        return subjectRepository.findAll();
+       List<Subject> subjects = subjectRepository.findAll();
+       return subjects.stream()
+               .map(subject ->new  SubjectDto(
+                       subject.getSubjectName(),
+                       subject.getSubjectId()
+               ))
+               .collect(Collectors.toList());
     }
 
     @Override
@@ -68,10 +68,10 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDto updateSubject(SubjectDto subjectDto, String id) {
         if (subjectRepository.existsById(id)) {
             Subject subject = subjectRepository.findById(id).get();
-//            subject.setSubjectName(subjectDto.getSubjectName());
-//            subject =
+            subject.setSubjectName(subjectDto.getSubjectName());
+            subject =
                     subjectRepository.save(subject);
-//            subjectDto.setSubjectId(subject.getSubjectId());
+            subjectDto.setSubjectId(subject.getSubjectId());
             return subjectDto;
         }
         return null;

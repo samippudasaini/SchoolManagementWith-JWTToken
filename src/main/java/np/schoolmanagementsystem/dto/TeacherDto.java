@@ -19,7 +19,7 @@ public class TeacherDto {
     private String lastName;
     private String email;
     private Long phone;
-    private String subjectName;
+//    private String subjectName;
     private String grade;
     private String userName;
     private String password;

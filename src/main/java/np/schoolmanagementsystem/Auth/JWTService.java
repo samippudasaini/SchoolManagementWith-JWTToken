@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import np.schoolmanagementsystem.Enum.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,11 @@ public class JWTService {
 
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role) {
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role",role );
+
 
 
         return Jwts.builder()

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 import np.schoolmanagementsystem.Enum.Role;
+import np.schoolmanagementsystem.entity.Classroom;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +33,7 @@ public class StudentDto {
     private String password;
     private  Long parentContact;
     private Role role;
-    private Long classroomId;
+    private Classroom classroom;
 
 }
 

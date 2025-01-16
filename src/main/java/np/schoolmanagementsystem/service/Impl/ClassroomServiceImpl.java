@@ -29,10 +29,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
 
     public ClassroomDto addClassroom(ClassroomDto classroomDto) {
-//        Optional<Classroom> existingclass = classroomRepository.findById(classroomDto.getClassroomId());
-//        if (existingclass.isPresent()) {
-//            throw new RuntimeException("Classroom already exists");
-//        }
+        Optional<Classroom> existingclass = classroomRepository.findById(classroomDto.getClassroomId());
+        if (existingclass.isPresent()) {
+            throw new RuntimeException("Classroom already exists");
+        }
         Classroom classroom = ClassroomMapper.mapToClassroom(classroomDto);
         Classroom savedClassroom = classroomRepository.save(classroom);
         return ClassroomMapper.mapToClassroomDto(savedClassroom);
@@ -56,7 +56,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public ClassroomDto updateClassroom(ClassroomDto classroomDto, Long ClassroomId) {
-        Optional<Classroom> existsClassroom = classroomRepository.findById(classroomDto.getClassroomId());
+       Optional<Classroom>  existsClassroom = classroomRepository.findById(classroomDto.getClassroomId());
         if (!existsClassroom.isPresent()) {
             throw new CustomRuntimeException("Classroom not found");
         }
@@ -73,4 +73,5 @@ public class ClassroomServiceImpl implements ClassroomService {
         classroomRepository.delete(classroom);
         return ClassroomMapper.mapToClassroomDto(classroom);
     }
+
 }

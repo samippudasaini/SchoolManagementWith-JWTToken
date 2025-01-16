@@ -3,6 +3,7 @@ package np.schoolmanagementsystem.controller;
 
 import np.schoolmanagementsystem.CustomExcaption.CustomIlligalArgumentException;
 import np.schoolmanagementsystem.dto.ClassroomDto;
+import np.schoolmanagementsystem.entity.Classroom;
 import np.schoolmanagementsystem.service.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static np.schoolmanagementsystem.ApiUrls.API.*;
+
 @RestController
-@RequestMapping("/api/classroom")
+@RequestMapping(BASE_URL_CLASSROOM)
 public class ClassroomController {
+//    @Autowired
     private  final ClassroomService classroomService;
 
     @Autowired
@@ -23,37 +27,41 @@ public class ClassroomController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/add")
+    @PostMapping(ADD_CLASSROOM)
 
     public ResponseEntity<ClassroomDto> addClassroom(@RequestBody ClassroomDto classroomDto) {
+//        System.out.println(classroomDto);
         if(classroomDto==null){
             throw new CustomIlligalArgumentException("Classroom filed cannot be null");
         }
         return new ResponseEntity<>(classroomService.addClassroom(classroomDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/{ClassroomId}")
+    @GetMapping(GET_CLASSROOM_BY_ID)
     public ResponseEntity<ClassroomDto> getClassroom(@PathVariable Long ClassroomId){
         return new ResponseEntity<> (classroomService.getClassroomById(ClassroomId), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update/{ClassroomId}")
+    @PutMapping(UPDATE_CLASSROOM_BY_ID)
     public ResponseEntity<ClassroomDto> updateClassroom(@PathVariable Long ClassroomId, @RequestBody ClassroomDto classroomDto)
     {
         ClassroomDto updateclassroomDto=classroomService.updateClassroom(classroomDto,ClassroomId);
         return new ResponseEntity<>(updateclassroomDto, HttpStatus.OK);
-
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{ClassroomId}")
-    public ResponseEntity<String> deleteClassroom(@PathVariable Long ClassroomId){
-        classroomService.deleteClassroom(ClassroomId);
+    @DeleteMapping(DELETE_CLASSROOM_BY_ID)
+    public ResponseEntity<String> deleteClassroom(@PathVariable Long id){
+        classroomService.deleteClassroom(id);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/getall")
+    @GetMapping(GET_ALL_CLASSROOM)
     public ResponseEntity<List<ClassroomDto>> getAllClassrooms(){
-        return new ResponseEntity<>(classroomService.getAllClassrooms(), HttpStatus.OK);
+        List<ClassroomDto> classrooms=classroomService.getAllClassrooms();
+        return ResponseEntity.ok(classrooms);
+//        return new ResponseEntity<>(classroomService.getAllClassrooms(), HttpStatus.OK);
     }
 }

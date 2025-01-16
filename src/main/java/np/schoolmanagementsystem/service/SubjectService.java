@@ -8,7 +8,7 @@ import java.util.List;
 public interface SubjectService {
     SubjectDto addSubject(SubjectDto subjectDto);
 
-    List<Subject> getAllSubjects();
+    List<SubjectDto> getAllSubjects();
 
     SubjectDto getSubjectById(String SubjectId);
 

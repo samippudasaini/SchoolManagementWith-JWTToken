@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static np.schoolmanagementsystem.ApiUrls.API.*;
+
 @RestController
-@RequestMapping("/api/subject")
+@RequestMapping(BASE_URL_SUBJECT)
 public class SubjectController {
 
     private final SubjectService subjectService;
@@ -24,34 +26,42 @@ public class SubjectController {
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping()
+    @PostMapping(ADD_SUBJECT)
     public ResponseEntity<SubjectDto> addSubject(@RequestBody SubjectDto subjectDto) {
         return ResponseEntity.ok(subjectService.addSubject(subjectDto));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(GET_SUBJECT_BY_ID)
     public ResponseEntity<SubjectDto> getSubjectById(@PathVariable String id) {
         SubjectDto subjectDto = subjectService.getSubjectById(id);
-        return ResponseEntity.ok(subjectDto);
+        if(subjectDto != null) {
+            return ResponseEntity.ok(subjectDto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update/{id}")
+    @PutMapping(UPDATE_SUBJECT_BY_ID)
     public ResponseEntity<SubjectDto> updateSubject(@RequestBody SubjectDto subjectDto, @PathVariable String id) {
         SubjectDto subjectDto1 = subjectService.updateSubject(subjectDto, id);
-        return ResponseEntity.ok(subjectDto1);
+        if(subjectDto1 != null) {
+            return ResponseEntity.ok(subjectDto1);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SubjectDto> deleteSubject(@PathVariable String id) {
+    @DeleteMapping(DELETE_SUBJECT_BY_ID)
+    public ResponseEntity<String> deleteSubject(@PathVariable String id) {
         subjectService.deleteSubject(id);
-        return ResponseEntity.ok().build();
+//        return ResponseEntity.ok().build();
+
+        return  ResponseEntity.ok("Subject deleted successfully.");
     }
 
 
-    @GetMapping("/getall")
-    public ResponseEntity<List<Subject>> getAllSubject() {
+    @GetMapping(GET_ALL_SUBJECT)
+    public ResponseEntity<List<SubjectDto>> getAllSubject() {
         return ResponseEntity.ok(subjectService.getAllSubjects());
     }
 }

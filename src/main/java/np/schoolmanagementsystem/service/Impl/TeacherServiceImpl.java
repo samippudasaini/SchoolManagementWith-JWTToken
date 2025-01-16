@@ -112,12 +112,13 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public String verify(TeacherDto teacherDto) {
+        Role role=teacherDto.getRole();
 
         Authentication authentication=
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(teacherDto
                         .getUserName(),teacherDto.getPassword()));
         if(authentication.isAuthenticated()){
-            return jwtService.generateToken(teacherDto.getUserName());
+            return jwtService.generateToken(teacherDto.getUserName(),role);
         }
 
         return "Fail";

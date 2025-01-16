@@ -11,7 +11,8 @@ public class StudentMapper {
     public static Student mapToStudent(StudentDto studentDto) {
 
         Classroom classroom = new Classroom();
-        classroom.setClassroomId(studentDto.getClassroomId());
+//        classroom.setClassroomId(studentDto.getClassroom());
+
 
         Student student = new Student(
                 studentDto.getStudentId(),
@@ -28,7 +29,8 @@ public class StudentMapper {
                 studentDto.getUserName(),
                 studentDto.getPassword(),
                 studentDto.getRole(),
-                classroom
+//                classroom
+                studentDto.getClassroom()
 
 
         );
@@ -51,7 +53,8 @@ public class StudentMapper {
                 student.getPassword(),
                 student.getParentContact(),
                 student.getRole(),
-                student.getClassroom().getClassroomId()
+//                to access grade in student register
+                student.getClassroom()
 
 
 

@@ -6,6 +6,7 @@ import np.schoolmanagementsystem.CustomExcaption.CustomRuntimeException;
 import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.Mapper.StaffMapper;
 import np.schoolmanagementsystem.dto.StaffDto;
+import np.schoolmanagementsystem.dto.masterResponse;
 import np.schoolmanagementsystem.entity.Staff;
 import np.schoolmanagementsystem.repository.StaffRepository;
 import np.schoolmanagementsystem.service.StaffService;
@@ -42,8 +43,6 @@ public class StaffServiceImpl implements StaffService {
             throw new CustomRuntimeException("Staff already exists");
         }
         Staff staff = StaffMapper.mapToStaff(staffDto);
-//        set roll
-//        staff.setRole(Role.ADMIN);
         Staff savedStaff = staffRepository.save(staff);
         return StaffMapper.mapToStaffDto(savedStaff);
     }
@@ -90,15 +89,27 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public String verify(StaffDto staffDto) {
+    public masterResponse verify(StaffDto staffDto) {
+
+        masterResponse response=new masterResponse();
+        Role role = staffDto.getRole();
 
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(staffDto
                         .getUserName(), staffDto.getPassword()));
         if( authentication.isAuthenticated()){
-            return jwtService.generateToken(staffDto.getUserName());
+//            return jwtService.generateToken(staffDto.getUserName(),role);
+            response.setCode(200);
+            response.setMessage("Success");
+            response.setStatus(true);
+            response.setData(jwtService.generateToken(staffDto.getUserName(),role));
         }
-
-return "fail";
+        else {
+            response.setCode(401);
+            response.setMessage("Failure");
+            response.setStatus(false);
+            response.setData(null);
+        }
+        return response;
     }
 }

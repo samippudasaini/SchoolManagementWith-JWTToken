@@ -4,6 +4,8 @@ package np.schoolmanagementsystem.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StudentDto;
+import np.schoolmanagementsystem.dto.masterResponse;
+import np.schoolmanagementsystem.entity.Student;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static np.schoolmanagementsystem.ApiUrls.API.*;
+
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping(BASE_URL_STUDENT)
 public class StudentController {
     private final StudentService studentService;
 
@@ -22,7 +26,7 @@ public class StudentController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{studentId}")
+    @PutMapping(UPDATE_STUDENT)
     public ResponseEntity<StudentDto> updateStudent(@PathVariable Long studentId,
                                                     @RequestBody StudentDto studentDto) {
 //        HttpSession session = request.getSession(false);
@@ -33,7 +37,7 @@ public class StudentController {
 //        }
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping(GET_STUDENT_BY_ID)
     public ResponseEntity<StudentDto> getStudent(@PathVariable Long studentId) {
         StudentDto studentDto = studentService.getStudentById(studentId);
         return new ResponseEntity<>(studentDto, HttpStatus.OK);
@@ -41,14 +45,14 @@ public class StudentController {
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping(DELETE_STUDENT)
     public ResponseEntity<String> deleteStudent(@PathVariable Long id, HttpSession session) {
         StudentDto studentDto = studentService.deleteStudentById(id, session);
         return  ResponseEntity.ok("Student deleted successfully.");
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<StudentDto> studentRegistration(@RequestBody StudentDto studentDto) {
+    @PostMapping(REGISTER_STUDENT)
+    public ResponseEntity<masterResponse<?>> studentRegistration(@RequestBody StudentDto studentDto) {
 
         return new ResponseEntity<>(studentService
                 .studentRegistration(studentDto), HttpStatus.CREATED);
@@ -56,7 +60,7 @@ public class StudentController {
     }
 
 
-    @PostMapping("/login")
+    @PostMapping(LOGIN_STUDENT)
     public String studentLogin(@RequestBody StudentDto studentDto, HttpSession session) {
 
 //        String userName = studentDto.getUserName();
@@ -77,10 +81,10 @@ public class StudentController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/getall")
+    @GetMapping(GET_ALL_STUDENT)
     public ResponseEntity<List<StudentDto>> getAllStudents() {
-        List<StudentDto> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
+//        List<StudentDto> students = studentService.getAllStudents();
+        return ResponseEntity.ok(studentService.getAllStudents());
 
     }
 

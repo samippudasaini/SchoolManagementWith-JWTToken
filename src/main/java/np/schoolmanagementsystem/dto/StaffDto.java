@@ -28,5 +28,4 @@ public class StaffDto {
     private String userName;
     private String password;
     private Role role;
-
 }

@@ -2,6 +2,7 @@ package np.schoolmanagementsystem.service;
 
 import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StudentDto;
+import np.schoolmanagementsystem.dto.masterResponse;
 import org.springframework.stereotype.Service;
 
 
@@ -18,9 +19,9 @@ public interface StudentService {
 
     List<StudentDto> getAllStudents();
 
-    StudentDto studentRegistration(StudentDto studentDto);
+    masterResponse<?> studentRegistration(StudentDto studentDto);
 
     boolean studentLogin(String userName, String password);
 
     String verify(StudentDto studentDto);
-}
+    }
