@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import np.schoolmanagementsystem.Enum.Role;
+import np.schoolmanagementsystem.dto.ClassroomDto;
 
 import java.util.*;
 
@@ -64,7 +65,7 @@ public class Student {
     private Role role;
 
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
 //    @JoinColumn(name = "classroom_id", nullable = true)
     private Classroom classroom;
 
@@ -93,11 +94,11 @@ public class Student {
     }
 
 
-//    this constructor are use studentId use in fee table
-
     public Student(Long studentId) {
         this.studentId = studentId;
     }
+
+
 
     public Student get()
     {

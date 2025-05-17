@@ -10,7 +10,7 @@ public interface StaffService {
 
     List<StaffDto> getAllStaff();
 
-    StaffDto getStaffById(int id);
+    public StaffDto getStaffById(Long id);
 
     void updateStaff(StaffDto staffDto);
 

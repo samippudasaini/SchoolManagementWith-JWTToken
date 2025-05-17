@@ -1,21 +1,15 @@
 package np.schoolmanagementsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "Exam_Table")
 public class Exam {
@@ -28,27 +22,11 @@ public class Exam {
     private String examType;
     private Integer fullMarks;
     private Integer passMark;
+    @Lob
+    @Column(name = "routine",columnDefinition = "LONGBLOB")
+    private byte[] routine;
+    private String routineMimeType;
 
-    public Exam(Integer examId, Integer subjectId, Integer classroomId, Date examDate) {
-        this.examId = examId;
-        this.subjectId = subjectId;
-        this.classroomId = classroomId;
-        this.examDate = examDate;
-    }
-
-//    public Integer getExamId() {
-//        return examId;
-//    }
-//
-//    public Integer SubjectId() {
-//        return subjectId;
-//    }
-//
-//    public Integer getClassroomId() {
-//        return classroomId;
-//    }
-//
-//    public Date getExamDate() {
-//        return examDate;
-//    }
+    @Transient
+    private byte[] base64Routine;
 }

@@ -22,7 +22,7 @@ public class StaffDto {
     private Long phone;
     private String position;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date hireDate;
     private Double salary;
     private String userName;

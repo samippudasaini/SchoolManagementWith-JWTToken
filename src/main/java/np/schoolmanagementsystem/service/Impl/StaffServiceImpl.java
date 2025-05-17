@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import np.schoolmanagementsystem.Enum.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,6 @@ public class StaffServiceImpl implements StaffService {
     public StaffServiceImpl(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
     }
-
     @Override
     public StaffDto registerStaff(StaffDto staffDto) {
 
@@ -49,12 +49,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public List<StaffDto> getAllStaff() {
-        return List.of();
+        return null;
     }
 
-    @Override
-    public StaffDto getStaffById(int id) {
-        return null;
+    public StaffDto getStaffById(Long id) {
+        Staff staff=staffRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        return StaffMapper.mapToStaffDto(staff);
     }
 
     @Override
@@ -88,23 +88,58 @@ public class StaffServiceImpl implements StaffService {
         return true;
     }
 
+//    @Override
+//    public masterResponse verify(StaffDto staffDto) {
+//
+//        masterResponse response=new masterResponse();
+//        Role role = staffDto.getRole();
+//
+//        Authentication authentication =
+//                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(staffDto
+//                        .getUserName(), staffDto.getPassword()));
+//        if( authentication.isAuthenticated()){
+//            String token = jwtService.generateToken(staffDto.getUserName(), role);
+//
+////            return jwtService.generateToken(staffDto.getUserName(),role);
+//            response.setCode(200);
+//            response.setMessage("Success");
+//            response.setStatus(true);
+//            response.setData(token);
+////            response.setData(jwtService.generateToken(staffDto.getUserName(),role));
+//        }
+//        else {
+//            response.setCode(401);
+//            response.setMessage("Failure");
+//            response.setStatus(false);
+//            response.setData(null);
+//        }
+//        return response;
+//    }
+
     @Override
     public masterResponse verify(StaffDto staffDto) {
+        masterResponse response = new masterResponse();
 
-        masterResponse response=new masterResponse();
-        Role role = staffDto.getRole();
-
+        // Authenticate credentials
         Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(staffDto
-                        .getUserName(), staffDto.getPassword()));
-        if( authentication.isAuthenticated()){
-//            return jwtService.generateToken(staffDto.getUserName(),role);
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        staffDto.getUserName(), staffDto.getPassword()));
+
+        if (authentication.isAuthenticated()) {
+            // ✅ Fetch actual Staff to get the role
+            Staff staff = staffRepository.findByUserName(staffDto.getUserName());
+            if (staff == null) {
+                throw new CustomRuntimeException("Staff not found");
+            }
+
+            Role role = staff.getRole();  // Now role won't be null
+            String token = jwtService.generateToken(staff.getUserName(), role);
+
             response.setCode(200);
             response.setMessage("Success");
             response.setStatus(true);
-            response.setData(jwtService.generateToken(staffDto.getUserName(),role));
-        }
-        else {
+            response.setData(token);
+        } else {
             response.setCode(401);
             response.setMessage("Failure");
             response.setStatus(false);
@@ -112,4 +147,5 @@ public class StaffServiceImpl implements StaffService {
         }
         return response;
     }
+
 }

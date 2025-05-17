@@ -34,8 +34,8 @@ public class ExamRequestDto {
     private Integer fullMarks;
     @NotNull(message="passMark is required")
     private Integer passMark;
+    private String routine;
+    private String base64Routine;
+    private String routineMimeType;
 
-//    public Object getExamId() {
-//        return examId;
-//    }
 }

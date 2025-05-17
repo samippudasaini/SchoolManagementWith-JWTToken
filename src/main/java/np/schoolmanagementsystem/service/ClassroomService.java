@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.service;
 
 import np.schoolmanagementsystem.dto.ClassroomDto;
+import np.schoolmanagementsystem.entity.Classroom;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +18,6 @@ public interface ClassroomService {
     ClassroomDto updateClassroom(ClassroomDto classroomDto, Long ClasroomId);
 
     ClassroomDto deleteClassroom(Long ClasroomId);
+    List<String> getAllGrades();
 
 }

@@ -4,6 +4,7 @@ package np.schoolmanagementsystem.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -43,24 +44,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
-//
-////        it is use to disable csrf
-//        http.csrf(customizer->customizer.disable());
-//
-//// no one can access without authentication
-//        http.authorizeRequests(request-> request.anyRequest().authenticated());
-//
-////        its allow login form to authentication
-////        http.formLogin(Customizer.withDefaults());
-//
-////        its allow http basic for authentication
-//        http.httpBasic(Customizer.withDefaults());
-//// each time generated new session id use this method form cannot be access to login browser default give popPop
-////        use this method to comment or remove http.formLogin
-//
-//        http.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//          return http.build();
-
 
         return http
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
@@ -71,12 +54,14 @@ public class SecurityConfig {
                         .requestMatchers("api/students/register")
                         .permitAll()
                         .requestMatchers("api/teachers/register")
-
                         .permitAll()
-                        .requestMatchers("api/teacher/login")
+                        .requestMatchers("/api/classroom/**")
+                        .permitAll()
+                        .requestMatchers("/api/teachers/login")
                         .permitAll()
                         .requestMatchers("/api/staffs/login")
                         .permitAll()
+                        .requestMatchers("/api/classrooms/get-all").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
@@ -87,30 +72,6 @@ public class SecurityConfig {
 
     }
 
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-
-////        It's for default self created or hardcoded
-//
-//
-//        UserDetails user1= User
-//                .withDefaultPasswordEncoder()
-//                .username("User")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//
-//
-//        UserDetails user2= User
-//                .withDefaultPasswordEncoder()
-//                .username("User1")
-//                .password("password1")
-//                .roles("ADMIN")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user1, user2);
-//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

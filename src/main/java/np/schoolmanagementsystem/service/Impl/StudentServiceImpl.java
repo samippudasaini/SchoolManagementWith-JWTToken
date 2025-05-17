@@ -1,10 +1,8 @@
-package np.schoolmanagementsystem.service.Impl;//package np.schoolmanagementsystem.service.Impl;
-//
-//public class StudentServiceImpl {
-//}
+package np.schoolmanagementsystem.service.Impl;
+
 
 import jakarta.servlet.http.HttpSession;
-import lombok.Data;
+import lombok.*;
 import np.schoolmanagementsystem.Auth.JWTService;
 import np.schoolmanagementsystem.Auth.MyUserDetailsService;
 import np.schoolmanagementsystem.CustomExcaption.CustomRuntimeException;
@@ -29,11 +27,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Data
-
-
-
-
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
@@ -41,14 +36,12 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-@Autowired
-  private JWTService jwtService;
+    @Autowired
+    private JWTService jwtService;
 
-@Autowired
-AuthenticationManager authenticationManager;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
-@Autowired
-private MyUserDetailsService  myUserDetailsService;
 
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
     private Object http;
@@ -59,13 +52,6 @@ private MyUserDetailsService  myUserDetailsService;
         this.classroomRepository = classroomRepository;
     }
 
-
-//    @Override
-//    public StudentDto addStudent(StudentDto studentDto) {
-//            Student student = StudentMapper.mapToStudent(studentDto);
-//            Student savedStudent = studentRepository.save(student);
-//            return StudentMapper.mapToStudentDto(savedStudent);
-//    }
 
     @Override
     public StudentDto updateStudent(StudentDto studentDto, Long studentId) {
@@ -100,40 +86,41 @@ private MyUserDetailsService  myUserDetailsService;
         List<Student> students = studentRepository.findAll();
         return students.stream().map(student -> StudentMapper.mapToStudentDto(student))
                 .collect(Collectors.toList());
-//
-//        return studentRepository.findAll();
+    }
+
+    public masterResponse<StudentDto> studentRegistration(StudentDto studentDto) {
+    Student existingStudent = studentRepository.findByEmail(studentDto.getEmail());
+    if (existingStudent != null) {
+        throw new CustomRuntimeException("Student already exists");
+    }
+    Optional<Classroom> existingClassroom = classroomRepository.findById(studentDto.getClassroomId());
+    if (existingClassroom.isEmpty()) {
+        throw new CustomRuntimeException("Classroom not found");
     }
 
 
-    public masterResponse<?> studentRegistration(StudentDto studentDto) {
+    studentDto.setPassword(encoder.encode(studentDto.getPassword()));
 
-        Student existingStudent = studentRepository.findByEmail(studentDto.getEmail());
-        if (existingStudent !=null) {
-            throw new CustomRuntimeException("Student already exists");
-        }
-      Optional<Classroom>  existingClassroom= classroomRepository.findById(studentDto.getClassroom().getClassroomId());
-        if (existingClassroom.isEmpty())
-        {
-            throw new CustomRuntimeException("Classroom not found");
-        }
+    Student student = StudentMapper.mapToStudent(studentDto);
 
+    Classroom classroom = existingClassroom.get();
+    student.setClassroom(classroom);
+    student.setGrade(classroom.getGrade());
+    student.setRole(Role.STUDENT);
 
+//    student.setClassroom(existingClassroom.get());
+//    student.setRole(Role.STUDENT);
+    Student savedStudent = studentRepository.save(student);
 
-        studentDto.setPassword(encoder.encode(studentDto.getPassword()));
+    // Prepare the response
+    masterResponse response = new masterResponse();
+    response.setCode(200);
+    response.setMessage("Student registration successful");
+    response.setStatus(true);
+    response.setData(savedStudent);
 
-        Student student = StudentMapper.mapToStudent(studentDto);
-        student.setRole(Role.STUDENT);
-        Student savedStudent = studentRepository.save(student);
-
-        masterResponse response = new masterResponse();
-        response.setCode(200);
-        response.setMessage("Student registration successful");
-        response.setStatus(true);
-        response.setData(null);
-
-        return response;
-
-    }
+    return response;
+}
 
     @Override
     public boolean studentLogin(String userName, String password) {
@@ -165,18 +152,10 @@ private MyUserDetailsService  myUserDetailsService;
 //
         Role role = studentDto.getRole();
 
-
-//        MyUserDetailsService userDetailsService = (MyUserDetailsService) myUserDetailsService;
-
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(studentDto
                         .getUserName(), studentDto.getPassword()));
         if (authentication.isAuthenticated()) {
-//           if(userDetailsService instanceof StudentPrincipal)
-//           {
-//               Entitytype="Student";
-//
-//           }
 
             return jwtService.generateToken(studentDto.getUserName(), role);
         }

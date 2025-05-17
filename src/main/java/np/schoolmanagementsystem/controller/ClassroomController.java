@@ -57,11 +57,18 @@ public class ClassroomController {
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping(GET_ALL_CLASSROOM)
     public ResponseEntity<List<ClassroomDto>> getAllClassrooms(){
         List<ClassroomDto> classrooms=classroomService.getAllClassrooms();
         return ResponseEntity.ok(classrooms);
 //        return new ResponseEntity<>(classroomService.getAllClassrooms(), HttpStatus.OK);
+    }
+
+//    its for to access grade in frontend
+    @GetMapping(GET_ALL_GRADE)
+    public ResponseEntity<List<String>> getAllGrades() {
+        List<String> grades=classroomService.getAllGrades();
+        return ResponseEntity.ok(grades);
     }
 }

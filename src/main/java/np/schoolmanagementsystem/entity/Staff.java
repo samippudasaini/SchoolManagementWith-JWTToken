@@ -10,8 +10,6 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 @Data
 @Entity
 @Table(name = "Staff_table")
@@ -33,14 +31,14 @@ public class Staff {
     @Column(name = "email_Address", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "pnone_no")
+    @Column(name = "phone_no")
     private Long phone;
 
     @Column(name = "position")
     private String position;
 
     @Column(name = "hire_Date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date hireDate;
 
     @Column(name = "staff_Salary")

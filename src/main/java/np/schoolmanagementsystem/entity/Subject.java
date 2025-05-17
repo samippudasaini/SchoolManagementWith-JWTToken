@@ -16,25 +16,12 @@ import java.util.List;
 public class Subject {
 
     @Id
-//    @GeneratedValue(strategy =GenerationType.AUTO)
-//    @Column(name = "subject_Id", unique = true, nullable = false)
-//    private Long subjectId;
     @Column(name = "subject_id")
     private String subjectId;
 
 
     @Column(name = "subject_Name")
     private String subjectName;
-
-//    @ManyToMany(mappedBy = "subjects")
-//   @JoinTable(name="teacher")
-
-//    featch type annotation
-
-//    private List<Teacher> teachers;
-
-//    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
-//    private List<Teacher> teachers;
 
     @OneToOne(mappedBy="subjects")
     private Teacher teachers;

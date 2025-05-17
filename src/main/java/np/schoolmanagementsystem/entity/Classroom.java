@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name = "Classroom_Table")
 public class Classroom {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "classroom_id")
     private Long classroomId;
 
@@ -27,6 +28,7 @@ public class Classroom {
     private String grade;
 
     //       Relation or mapping between Classroom and Teacher
+    @JsonIgnore
     @OneToMany(mappedBy = "classroom",cascade = CascadeType.ALL)
     private List<Teacher> teachers;
 

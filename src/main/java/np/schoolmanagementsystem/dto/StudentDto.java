@@ -6,13 +6,14 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.entity.Classroom;
 
-@Data
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -33,7 +34,8 @@ public class StudentDto {
     private String password;
     private  Long parentContact;
     private Role role;
-    private Classroom classroom;
+//    private  Classroom classroom;
+    private Long classroomId;
 
 }
 

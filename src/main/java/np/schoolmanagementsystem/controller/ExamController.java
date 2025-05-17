@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import np.schoolmanagementsystem.dto.ExamRequestDto;
 import np.schoolmanagementsystem.dto.ResponseDto;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,11 +28,29 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @PostMapping(ADD_EXAM)
-    public ResponseEntity<ResponseDto> addExam(@Valid @RequestBody ExamRequestDto examRequestDto) {
-        ResponseDto examResponseDto = examService.addExam(examRequestDto);
-        return ResponseEntity.ok(examResponseDto);
+@PostMapping(ADD_EXAM)
+public ResponseEntity<ResponseDto> addExam(
+        @RequestPart("exam") String examJson,
+        @RequestPart("routine") MultipartFile routineFile) throws Exception {
+
+    ObjectMapper mapper = new ObjectMapper();
+    ExamRequestDto examRequestDto = mapper.readValue(examJson, ExamRequestDto.class);
+
+    if (routineFile != null && !routineFile.isEmpty()) {
+        byte[] fileBytes = routineFile.getBytes();
+        String base64Encoded = java.util.Base64.getEncoder().encodeToString(fileBytes);
+
+        // Get MIME type of uploaded file
+        String mimeType = routineFile.getContentType();
+
+        // Set base64 string with MIME type prefix
+        examRequestDto.setRoutine("data:" + mimeType + ";base64," + base64Encoded);
     }
+
+    ResponseDto examResponseDto = examService.addExam(examRequestDto);
+    return ResponseEntity.ok(examResponseDto);
+}
+
 
     @GetMapping(GET_EXAM)
     public ResponseEntity<DetailedResponse> getExamById(@PathVariable int examId) {

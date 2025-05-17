@@ -1,11 +1,9 @@
 package np.schoolmanagementsystem.controller;
 
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.dto.masterResponse;
-import np.schoolmanagementsystem.entity.Student;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +51,12 @@ public class StudentController {
 
     @PostMapping(REGISTER_STUDENT)
     public ResponseEntity<masterResponse<?>> studentRegistration(@RequestBody StudentDto studentDto) {
+//        if (studentDto.getClassroom() == null) {
+//            System.out.println("Classroom in StudentDto is null!");
+//        } else {
+//            System.out.println("Classroom ID in StudentDto: " + studentDto.getClassroom().getClassroomId());
+//        }
+
 
         return new ResponseEntity<>(studentService
                 .studentRegistration(studentDto), HttpStatus.CREATED);
@@ -61,7 +65,7 @@ public class StudentController {
 
 
     @PostMapping(LOGIN_STUDENT)
-    public String studentLogin(@RequestBody StudentDto studentDto, HttpSession session) {
+    public String studentLogin(@RequestBody StudentDto studentDto) {
 
 //        String userName = studentDto.getUserName();
 //        String password = studentDto.getPassword();

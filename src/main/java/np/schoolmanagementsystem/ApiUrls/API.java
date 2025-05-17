@@ -58,6 +58,6 @@ public class API {
     public static final String DELETE_CLASSROOM_BY_ID = "/delete-classroom/{id}";
     public static final String UPDATE_CLASSROOM_BY_ID = "/update-classroom/{id}";
     public static final String GET_CLASSROOM_BY_ID = "/get-classroom/{id}";
-
+    public static final String GET_ALL_GRADE = "/get-grades";
 
 }

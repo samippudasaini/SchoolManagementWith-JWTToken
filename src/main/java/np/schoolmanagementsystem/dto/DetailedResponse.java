@@ -19,5 +19,6 @@ public class DetailedResponse extends BaseDto {
     private Integer passMark;
     private Integer subjectId;
     private Integer classroomId;
+    private String base64Routine;
 
 }

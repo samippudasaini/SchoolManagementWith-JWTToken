@@ -29,10 +29,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
 
     public ClassroomDto addClassroom(ClassroomDto classroomDto) {
-        Optional<Classroom> existingclass = classroomRepository.findById(classroomDto.getClassroomId());
-        if (existingclass.isPresent()) {
-            throw new RuntimeException("Classroom already exists");
-        }
+//        Optional<Classroom> existingclass = classroomRepository.findById(classroomDto.getClassroomId());
+//        if (existingclass.isPresent()) {
+//            throw new RuntimeException("Classroom already exists");
+//        }
         Classroom classroom = ClassroomMapper.mapToClassroom(classroomDto);
         Classroom savedClassroom = classroomRepository.save(classroom);
         return ClassroomMapper.mapToClassroomDto(savedClassroom);
@@ -74,4 +74,13 @@ public class ClassroomServiceImpl implements ClassroomService {
         return ClassroomMapper.mapToClassroomDto(classroom);
     }
 
+
+
+    @Override
+    public List<String> getAllGrades() {
+        return classroomRepository.findAll().stream()
+                .map(Classroom::getGrade)
+                .distinct()
+                .toList();
+    }
 }

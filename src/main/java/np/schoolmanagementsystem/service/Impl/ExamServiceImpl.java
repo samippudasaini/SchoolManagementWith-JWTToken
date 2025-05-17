@@ -9,12 +9,13 @@ import np.schoolmanagementsystem.entity.Exam;
 import np.schoolmanagementsystem.repository.ExamRepository;
 import np.schoolmanagementsystem.service.ExamService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Component
+@Service
 
 public class ExamServiceImpl implements ExamService {
 
