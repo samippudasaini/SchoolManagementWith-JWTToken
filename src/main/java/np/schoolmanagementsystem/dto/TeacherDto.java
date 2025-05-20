@@ -6,10 +6,9 @@ import np.schoolmanagementsystem.Enum.Role;
 import np.schoolmanagementsystem.entity.Classroom;
 import np.schoolmanagementsystem.entity.Subject;
 
-@AllArgsConstructor
+import java.util.List;
 @Data
-@Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 
 public class TeacherDto {
@@ -20,12 +19,15 @@ public class TeacherDto {
     private String email;
     private Long phone;
 //    private String subjectName;
-    private String grade;
+    private List<ClassroomDto> grade;
+
     private String userName;
     private String password;
+    private List<SubjectDto> subject;
     private Role role;
-    private Long classroomId;
-    private String subjectId;
+
+//    private Long classroomId;
+//    private String subjectId;
 
 
 

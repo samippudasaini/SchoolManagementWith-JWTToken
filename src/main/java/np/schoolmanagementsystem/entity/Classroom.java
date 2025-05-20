@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@AllArgsConstructor
+
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "Classroom_Table")
 public class Classroom {
@@ -27,15 +27,4 @@ public class Classroom {
     @Column(name = "grade")
     private String grade;
 
-    //       Relation or mapping between Classroom and Teacher
-    @JsonIgnore
-    @OneToMany(mappedBy = "classroom",cascade = CascadeType.ALL)
-    private List<Teacher> teachers;
-
-
-    public Classroom(Long classroomId, Long roomNo, String grade) {
-        this.classroomId = classroomId;
-        this.roomNo = roomNo;
-        this.grade = grade;
-    }
 }

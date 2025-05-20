@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class FeeDto {
     private Long feeId;
@@ -43,5 +42,4 @@ public class FeeDto {
         this.fineAmount=fineAmount;
         this.studentId = studentId;
     }
-
 }

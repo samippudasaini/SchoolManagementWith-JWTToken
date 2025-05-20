@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
 public class TeacherPrincipal implements UserDetails {
 
-    private Teacher teacher;
+    private final Teacher teacher   ;
 
     public TeacherPrincipal(Teacher teacher) {
         this.teacher = teacher;
@@ -51,4 +51,5 @@ public class TeacherPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

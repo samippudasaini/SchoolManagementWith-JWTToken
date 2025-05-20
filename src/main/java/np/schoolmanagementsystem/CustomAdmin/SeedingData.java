@@ -24,11 +24,16 @@ public class SeedingData implements CommandLineRunner {
             staff.setFirstName("samip");
             staff.setLastName("pudasaini");
             staff.setEmail("samip@gmail.com.com");
-            staff.setUserName("samip22");
+            staff.setUserName("samip11");
             staff.setPhone(9808246445L);
-            staff.setPassword(encoder.encode("@@98082"));
+            staff.setPassword(encoder.encode("98082"));
             staff.setRole(Role.ADMIN);
             staffRepository.save(staff);
+        }else {
+            // update username and password
+            exestingstaff.setUserName("samip11");
+            exestingstaff.setPassword(encoder.encode("98082"));
+            staffRepository.save(exestingstaff); // save updates
         }
     }
 }

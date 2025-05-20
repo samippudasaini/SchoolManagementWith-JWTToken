@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.controller;
 
 
+import jakarta.validation.Valid;
 import np.schoolmanagementsystem.dto.TeacherDto;
 import np.schoolmanagementsystem.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class TeacherController {
     }
 
     @PostMapping(REGISTER_TEACHER)
-    public ResponseEntity<TeacherDto> teacherRegistration(@RequestBody TeacherDto teacherDto) {
+    public ResponseEntity<TeacherDto> teacherRegistration( @Valid @RequestBody TeacherDto teacherDto) {
 
         return ResponseEntity.ok(teacherService.teacherRegistration(teacherDto));
     }

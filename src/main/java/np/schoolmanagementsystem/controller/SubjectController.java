@@ -17,12 +17,13 @@ import static np.schoolmanagementsystem.ApiUrls.API.*;
 @RequestMapping(BASE_URL_SUBJECT)
 public class SubjectController {
 
-    private final SubjectService subjectService;
-
     @Autowired
-    public SubjectController(SubjectService subjectService) {
-        this.subjectService = subjectService;
-    }
+    private  SubjectService subjectService;
+
+//    @Autowired
+//    public SubjectController(SubjectService subjectService) {
+//        this.subjectService = subjectService;
+//    }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -58,6 +59,7 @@ public class SubjectController {
 
         return  ResponseEntity.ok("Subject deleted successfully.");
     }
+
 
 
     @GetMapping(GET_ALL_SUBJECT)

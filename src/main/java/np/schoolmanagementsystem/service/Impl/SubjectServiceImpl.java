@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
 
 public class SubjectServiceImpl implements SubjectService {
 
-    private final SubjectRepository subjectRepository;
-
     @Autowired
-    public SubjectServiceImpl(SubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
-    }
+    private SubjectRepository subjectRepository;
+
+//    @Autowired
+//    public SubjectServiceImpl(SubjectRepository subjectRepository) {
+//        this.subjectRepository = subjectRepository;
+//    }
 
 
     @Override
@@ -34,12 +35,13 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         Subject subject = new Subject();
-        subject.setSubjectName(subjectDto.getSubjectName());
         subject.setSubjectId(subjectDto.getSubjectId());
-//        subject =
-                subjectRepository.save(subject);
+        subject.setSubjectName(subjectDto.getSubjectName());
 
-        return subjectDto;
+        Subject saveSubject = subjectRepository.save(subject);
+
+        return new SubjectDto(saveSubject.getSubjectId(),
+        saveSubject.getSubjectName());
     }
 
     @Override
@@ -48,8 +50,9 @@ public class SubjectServiceImpl implements SubjectService {
        List<Subject> subjects = subjectRepository.findAll();
        return subjects.stream()
                .map(subject ->new  SubjectDto(
-                       subject.getSubjectName(),
-                       subject.getSubjectId()
+                       subject.getSubjectId(),
+                       subject.getSubjectName()
+
                ))
                .collect(Collectors.toList());
     }

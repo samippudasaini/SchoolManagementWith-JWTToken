@@ -4,19 +4,19 @@ package np.schoolmanagementsystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import np.schoolmanagementsystem.Enum.Role;
+import np.schoolmanagementsystem.dto.ClassroomDto;
+import np.schoolmanagementsystem.dto.SubjectDto;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Table(name = "Teacher_table")
 @Entity
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teacherId", unique = true, nullable = false, insertable = false, updatable = false)
     private Long teacherId;
 
     @Column(name = "first_Name")
@@ -34,33 +34,40 @@ public class Teacher {
     @Column(name = "phone_Number")
     private Long phone;
 
-//    @Column(name = "teach_Subject_Name")
-//    private String subjectName;
-
-
-    @Column(name = "teach_Grade")
-    private String grade;
-
     @Column(name = "user_Name")
     private String userName;
 
     @Column(name = "password")
     private String password;
 
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "role",nullable = false)
     private Role role;
 
 
-    @OneToOne
-    private Subject  subjects;
-
-    @ManyToOne
-//    @JoinColumn(name = "classroomId")
-    private Classroom classroom;
-
     public Teacher get() {
-        return this;
+        return this.get();
     }
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "teacher_classrooms",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "classroom_id")
+    )
+
+    private List<Classroom> grade;  // or classrooms
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "teacher_subjects",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subject> subject;
+
 }
 
 

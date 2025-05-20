@@ -33,8 +33,6 @@ import java.util.Arrays;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
-
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -62,6 +60,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/staffs/login")
                         .permitAll()
                         .requestMatchers("/api/classrooms/get-all").permitAll()
+                        .requestMatchers("/api/subjects/get-all").permitAll()
+                        .requestMatchers("/api/pending-teachers/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
