@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import np.schoolmanagementsystem.Enum.Role;
 
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
 
@@ -30,6 +30,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public StaffServiceImpl(StaffRepository staffRepository) {
@@ -81,67 +83,51 @@ public class StaffServiceImpl implements StaffService {
             if (!staff.getUserName().equals(userName)) {
                 throw new CustomRuntimeException("Wrong username ");
             }
-            if (!staff.getPassword().equals(password)) {
+//            if (!staff.getPassword().equals(password)) {
+//                throw new CustomRuntimeException("Wrong password");
+//            }
+
+//            change from gpt
+            if (!passwordEncoder.matches(password, staff.getPassword())) {
                 throw new CustomRuntimeException("Wrong password");
             }
         }
         return true;
     }
 
-//    @Override
-//    public masterResponse verify(StaffDto staffDto) {
-//
-//        masterResponse response=new masterResponse();
-//        Role role = staffDto.getRole();
-//
-//        Authentication authentication =
-//                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(staffDto
-//                        .getUserName(), staffDto.getPassword()));
-//        if( authentication.isAuthenticated()){
-//            String token = jwtService.generateToken(staffDto.getUserName(), role);
-//
-////            return jwtService.generateToken(staffDto.getUserName(),role);
-//            response.setCode(200);
-//            response.setMessage("Success");
-//            response.setStatus(true);
-//            response.setData(token);
-////            response.setData(jwtService.generateToken(staffDto.getUserName(),role));
-//        }
-//        else {
-//            response.setCode(401);
-//            response.setMessage("Failure");
-//            response.setStatus(false);
-//            response.setData(null);
-//        }
-//        return response;
-//    }
-
     @Override
     public masterResponse verify(StaffDto staffDto) {
         masterResponse response = new masterResponse();
 
         // Authenticate credentials
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                        staffDto.getUserName(), staffDto.getPassword()));
+        try {
+            Authentication authentication =
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                            staffDto.getUserName(), staffDto.getPassword()));
 
-        if (authentication.isAuthenticated()) {
-            // ✅ Fetch actual Staff to get the role
-            Staff staff = staffRepository.findByUserName(staffDto.getUserName());
-            if (staff == null) {
-                throw new CustomRuntimeException("Staff not found");
+            if (authentication.isAuthenticated()) {
+                // Fetch actual Staff to get the role
+                Staff staff = staffRepository.findByUserName(staffDto.getUserName());
+                if (staff == null) {
+                    throw new CustomRuntimeException("Staff not found");
+                }
+
+                Role role = staff.getRole();  // Now role won't be null
+                String token = jwtService.generateToken(staff.getUserName(), role);
+
+                response.setCode(200);
+                response.setMessage("Success");
+                response.setStatus(true);
+                response.setData(token);
+            } else {
+                response.setCode(401);
+                response.setMessage("Failure");
+                response.setStatus(false);
+                response.setData(null);
             }
-
-            Role role = staff.getRole();  // Now role won't be null
-            String token = jwtService.generateToken(staff.getUserName(), role);
-
-            response.setCode(200);
-            response.setMessage("Success");
-            response.setStatus(true);
-            response.setData(token);
-        } else {
+        } catch (Exception e) {
             response.setCode(401);
-            response.setMessage("Failure");
+            response.setMessage("Invalid credentials: " + e.getMessage());
             response.setStatus(false);
             response.setData(null);
         }

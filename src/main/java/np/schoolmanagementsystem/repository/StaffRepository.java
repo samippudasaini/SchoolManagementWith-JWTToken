@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 
-public interface StaffRepository extends JpaRepository<Staff, Long> {
+public interface StaffRepository extends JpaRepository<Staff, Long>
+{
 
     Optional<Staff> findByEmail(String email);
    Staff findByUserName(String userName);
@@ -18,5 +19,4 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     Staff findByRole(Role role);
     @Query(value = "SELECT * FROM Staff_table", nativeQuery = true)
     List<Staff> fetchAllStaff();
-
 }

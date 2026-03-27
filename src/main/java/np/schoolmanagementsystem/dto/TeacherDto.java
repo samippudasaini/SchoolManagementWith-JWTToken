@@ -18,17 +18,13 @@ public class TeacherDto {
     private String lastName;
     private String email;
     private Long phone;
-//    private String subjectName;
-    private List<ClassroomDto> grade;
+//    private List<ClassroomDto> grade;
 
     private String userName;
     private String password;
-    private List<SubjectDto> subject;
+//    private List<SubjectDto> subject;
     private Role role;
 
-//    private Long classroomId;
-//    private String subjectId;
-
-
-
+    private List<String> grade;   // grade names like "I", "II"
+    private List<String> subjectName; // subject names like "Math", "Nepali"
 }

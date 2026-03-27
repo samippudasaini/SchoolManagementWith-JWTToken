@@ -24,15 +24,15 @@ public class StudentDto {
     private String middleName;
     private String lastName;
     private String email;
-    private Long phone_no;
+    private String phone_no;
     private String gender;
     private String address;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date enrollmentDate;
     private  String grade;
     private String userName;
     private String password;
-    private  Long parentContact;
+    private  String parentContact;
     private Role role;
 //    private  Classroom classroom;
     private Long classroomId;

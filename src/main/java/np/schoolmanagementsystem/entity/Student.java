@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import np.schoolmanagementsystem.Enum.Role;
+import np.schoolmanagementsystem.Enum.StudentStatus;
 import np.schoolmanagementsystem.dto.ClassroomDto;
 
 import java.util.*;
@@ -30,11 +32,12 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
+    @Getter
     @Column(name = "email_address", unique = true, nullable = false, length = 100)
     private String email;
 
     @Column(name = "phone_number")
-    private Long phone_no;
+    private String phone_no;
 
     @Column(name = "gender")
     private String gender;
@@ -43,7 +46,7 @@ public class Student {
     private String address;
 
     @Column(name = "enrollement_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date enrollmentDate;
 
 
@@ -52,7 +55,7 @@ public class Student {
 
 
     @Column(name = "parent_contact")
-    private Long parentContact;
+    private String parentContact;
 
 
     @Column(name = "user_name")
@@ -64,6 +67,9 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StudentStatus status;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
 //    @JoinColumn(name = "classroom_id", nullable = true)
@@ -73,26 +79,26 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private List<Fee> fee;
 
-    public Student(Long studentId, String firstName, String middleName, String lastName, String email,
-                   Long phone_no, String gender, String address, Date enrollmentDate, String grade,
-                   Long parentContact, String userName, String password, Role role,Classroom classroom) {
-        this.studentId = studentId;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone_no = phone_no;
-        this.gender = gender;
-        this.address = address;
-        this.enrollmentDate = enrollmentDate;
-        this.grade = grade;
-        this.parentContact = parentContact;
-        this.userName = userName;
-        this.password = password;
-        this.role = role;
-        this.classroom = classroom;
-    }
-
+//    public Student(Long studentId, String firstName, String middleName, String lastName, String email,
+//                   String phone_no, String gender, String address, Date enrollmentDate, String grade,
+//                   String parentContact, String userName, String password, Role role,Classroom classroom) {
+//        this.studentId = studentId;
+//        this.firstName = firstName;
+//        this.middleName = middleName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.phone_no = phone_no;
+//        this.gender = gender;
+//        this.address = address;
+//        this.enrollmentDate = enrollmentDate;
+//        this.grade = grade;
+//        this.parentContact = parentContact;
+//        this.userName = userName;
+//        this.password = password;
+//        this.role = role;
+//        this.classroom = classroom;
+//    }
+//
 
     public Student(Long studentId) {
         this.studentId = studentId;
@@ -104,4 +110,11 @@ public class Student {
     {
         return this;
     }
+
+    public String getFullName() {
+        return firstName + " " + middleName + " " + lastName;
+    }
+
+
+
 }

@@ -15,7 +15,6 @@ public class PendingTeacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String firstName;
     private String middleName;
     private String lastName;
@@ -23,7 +22,14 @@ public class PendingTeacher {
     private Long phone;
     private String userName;
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    @Column(name = "grade_names")
+    private String grade;
+
+    @Column(name = "subject_names")
+    private String subjectName;
+
 }

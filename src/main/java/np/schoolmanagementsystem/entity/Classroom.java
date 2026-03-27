@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
 @Table(name = "Classroom_Table")
 public class Classroom {

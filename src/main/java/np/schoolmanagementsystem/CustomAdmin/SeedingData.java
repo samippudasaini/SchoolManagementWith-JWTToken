@@ -13,27 +13,48 @@ import org.springframework.stereotype.Service;
 public class SeedingData implements CommandLineRunner {
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
+
+
     @Autowired
     private StaffRepository staffRepository;
     @Override
     public void run(String... args) throws Exception {
 
-        Staff exestingstaff = staffRepository.findByRole(Role.ADMIN);
-        if (exestingstaff == null) {
-            Staff staff = new Staff();
-            staff.setFirstName("samip");
-            staff.setLastName("pudasaini");
-            staff.setEmail("samip@gmail.com.com");
-            staff.setUserName("samip11");
-            staff.setPhone(9808246445L);
-            staff.setPassword(encoder.encode("98082"));
-            staff.setRole(Role.ADMIN);
-            staffRepository.save(staff);
-        }else {
-            // update username and password
-            exestingstaff.setUserName("samip11");
-            exestingstaff.setPassword(encoder.encode("98082"));
-            staffRepository.save(exestingstaff); // save updates
+//        Staff exestingstaff = staffRepository.findByRole(Role.ADMIN);
+//        if (exestingstaff == null) {
+//            Staff staff = new Staff();
+//            staff.setFirstName("samip");
+//            staff.setLastName("pudasaini");
+//            staff.setEmail("samip@gmail.com");
+//            staff.setUserName("samip101");
+//            staff.setPhone(9808246445L);
+//            staff.setPassword(encoder.encode("98082"));
+//            staff.setRole(Role.ADMIN);
+//            staffRepository.save(staff);
+//        }
+        Staff staff= staffRepository.findByRole(Role.ADMIN);
+        if(staff==null){
+            staff=new Staff();
         }
+        staff.setFirstName("samip");
+        staff.setLastName("pudasaini");
+        staff.setEmail("samip@gmail.com");
+        staff.setUserName("samip_new");   // ✏️ just change this anytime
+        staff.setPhone(9808246445L);
+        staff.setPassword(encoder.encode("98082"));
+        staff.setRole(Role.ADMIN);
+        staffRepository.save(staff);
+
+//        System.out.println("✅ Admin seeded: " + staff.getUserName());
+
+
+
+//        staffRepository.save(exestingstaff); // save updates
+
+
+
+
     }
 }
+
+

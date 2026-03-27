@@ -10,4 +10,9 @@ import java.util.Optional;
 public interface PendingTeacherRepository extends JpaRepository<PendingTeacher, Long> {
     Optional<PendingTeacher> findByUserName(String userName);
     Optional<PendingTeacher> findByEmail(String email);
+
+
+    Optional<PendingTeacher> findById(Long id);
+    void delete(PendingTeacher pendingTeacher);
+
 }

@@ -52,4 +52,10 @@ public class Staff {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public Staff orElseThrow() {
+        return this;
+    }
+
+
 }

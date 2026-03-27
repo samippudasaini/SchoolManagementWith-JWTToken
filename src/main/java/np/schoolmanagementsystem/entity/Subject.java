@@ -4,9 +4,10 @@ import lombok.*;
 
 import java.util.List;
 
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "Subject_Table")
 public class Subject {
@@ -15,6 +16,5 @@ public class Subject {
     private String subjectId;
     @Column(name = "subject_Name")
     private String subjectName;
-//    @OneToOne(mappedBy="subjects")
-//    private Teacher teachers;
+
 }

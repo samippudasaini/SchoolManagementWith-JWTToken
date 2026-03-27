@@ -30,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private StaffRepository staffRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException,ResourceNotFoundException {
 
         Student student = studentRepository.findByUserName(userName);
         if (student != null) {
@@ -49,6 +49,7 @@ public class MyUserDetailsService implements UserDetailsService {
             return new StaffPrincipal(staff);
         }
         throw new ResourceNotFoundException("User not found.");
-
     }
+
 }
+

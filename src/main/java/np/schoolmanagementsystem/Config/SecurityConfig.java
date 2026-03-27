@@ -1,10 +1,11 @@
 package np.schoolmanagementsystem.Config;
 
 
+import lombok.RequiredArgsConstructor;
+import np.schoolmanagementsystem.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,13 +14,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,11 +26,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -39,29 +39,26 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    private final StaffRepository staffRepository;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
-
         return http
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
-                .csrf(customizer -> customizer.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("api/students/login")
-                        .permitAll()
-                        .requestMatchers("api/students/register")
-                        .permitAll()
-                        .requestMatchers("api/teachers/register")
-                        .permitAll()
-                        .requestMatchers("/api/classroom/**")
-                        .permitAll()
-                        .requestMatchers("/api/teachers/login")
-                        .permitAll()
-                        .requestMatchers("/api/staffs/login")
-                        .permitAll()
+//                        .requestMatchers("api/students/login")
+//                        .permitAll()
+                        .requestMatchers("/api/staffs/test-password").permitAll()
+                        .requestMatchers("/api/staffs/login").permitAll() // allow login
+                        .requestMatchers("/api/fee/get-all-fee").permitAll()
+                        .requestMatchers("/api/teachers/register").permitAll()
+                        .requestMatchers("/api/classroom/**").permitAll()
+                        .requestMatchers("/api/teachers/login").permitAll()
+                        .requestMatchers("api/staffs/login").permitAll()
                         .requestMatchers("/api/classrooms/get-all").permitAll()
                         .requestMatchers("/api/subjects/get-all").permitAll()
-                        .requestMatchers("/api/pending-teachers/**").permitAll()
+                        .requestMatchers("/api/teachers/by-username/{userName}").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
@@ -72,15 +69,29 @@ public class SecurityConfig {
 
     }
 
+//
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+////        authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+//        authProvider.setUserDetailsService(userDetailsService);
+//        return authProvider;
+//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-//        authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        authProvider.setPasswordEncoder(passwordEncoder()); // use the bean
         authProvider.setUserDetailsService(userDetailsService);
         return authProvider;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
@@ -92,12 +103,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Allow all origins
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow all origins
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
+
+
+
+
+
+

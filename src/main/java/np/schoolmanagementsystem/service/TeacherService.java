@@ -18,4 +18,11 @@ public interface TeacherService {
     List<TeacherDto> getAllTeachers();
 
     String verify(TeacherDto teacherDto);
+    TeacherDto getTeacherByUsername(String userName);
+
+
+//    add from pending teacher work fine so
+
+    TeacherDto approvePendingTeacher(Long pendingTeacherId);
+
 }

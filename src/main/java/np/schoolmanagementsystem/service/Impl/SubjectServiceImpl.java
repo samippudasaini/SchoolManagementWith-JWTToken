@@ -21,12 +21,6 @@ public class SubjectServiceImpl implements SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
 
-//    @Autowired
-//    public SubjectServiceImpl(SubjectRepository subjectRepository) {
-//        this.subjectRepository = subjectRepository;
-//    }
-
-
     @Override
     public SubjectDto addSubject(SubjectDto subjectDto) {
         Optional<Subject> existSubject = subjectRepository.findById(subjectDto.getSubjectId());

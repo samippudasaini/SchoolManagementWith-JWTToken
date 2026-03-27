@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static np.schoolmanagementsystem.ApiUrls.API.*;
 
 @RestController
@@ -18,11 +20,11 @@ import static np.schoolmanagementsystem.ApiUrls.API.*;
 public class TeacherController {
 
     @Autowired
-    TeacherService teacherService;
+    private TeacherService teacherService;
 
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
+//    public TeacherController(TeacherService teacherService) {
+//        this.teacherService = teacherService;
+//    }
 
     @PostMapping(REGISTER_TEACHER)
     public ResponseEntity<TeacherDto> teacherRegistration( @Valid @RequestBody TeacherDto teacherDto) {
@@ -51,14 +53,21 @@ public class TeacherController {
 
     @PostMapping(LOGIN_TEACHER)
     public String teacherLogin(@RequestBody TeacherDto teacherDto) {
-//        String userName = teacherDto.getUserName();
-//        String password = teacherDto.getPassword();
-//        if (teacherService.teacherLogin(userName, password)) {
-//            return ResponseEntity.ok("success login");
-//        }
         return teacherService.verify(teacherDto);
-//        return ResponseEntity.ok("fail");
     }
+    @GetMapping("/by-username/{userName}")
+    public ResponseEntity<TeacherDto> getTeacherByUsername(@PathVariable String userName) {
+        TeacherDto teacherDto = teacherService.getTeacherByUsername(userName);
+        return ResponseEntity.ok(teacherDto);
+    }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/approve/{pendingTeacherId}")
+    public ResponseEntity<TeacherDto> approvePendingTeacher(@PathVariable Long pendingTeacherId) {
+        return ResponseEntity.ok(teacherService.approvePendingTeacher(pendingTeacherId));
+    }
+
+
 }
 
 

@@ -2,8 +2,11 @@ package np.schoolmanagementsystem.controller;
 
 
 import jakarta.servlet.http.HttpSession;
+import np.schoolmanagementsystem.dto.LoginResponse;
 import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.dto.masterResponse;
+import np.schoolmanagementsystem.entity.Student;
+import np.schoolmanagementsystem.payload.APIResponse;
 import np.schoolmanagementsystem.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +30,9 @@ public class StudentController {
     @PutMapping(UPDATE_STUDENT)
     public ResponseEntity<StudentDto> updateStudent(@PathVariable Long studentId,
                                                     @RequestBody StudentDto studentDto) {
-//        HttpSession session = request.getSession(false);
-//        String role = (String) session.getAttribute("Role");
-//        if ("ADMIN".equals(role)) {
             StudentDto updatedStudentDto = studentService.updateStudent(studentDto, studentId);
             return new ResponseEntity<>(updatedStudentDto, HttpStatus.OK);
-//        }
+
     }
 
     @GetMapping(GET_STUDENT_BY_ID)
@@ -51,45 +51,75 @@ public class StudentController {
 
     @PostMapping(REGISTER_STUDENT)
     public ResponseEntity<masterResponse<?>> studentRegistration(@RequestBody StudentDto studentDto) {
-//        if (studentDto.getClassroom() == null) {
-//            System.out.println("Classroom in StudentDto is null!");
-//        } else {
-//            System.out.println("Classroom ID in StudentDto: " + studentDto.getClassroom().getClassroomId());
-//        }
-
-
         return new ResponseEntity<>(studentService
                 .studentRegistration(studentDto), HttpStatus.CREATED);
 
     }
 
+//    @PostMapping(LOGIN_STUDENT)
+//    public String studentLogin(@RequestBody StudentDto studentDto) {
+//            return studentService.verify(studentDto);
+//    }
 
     @PostMapping(LOGIN_STUDENT)
-    public String studentLogin(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<APIResponse> studentLogin(@RequestBody StudentDto studentDto) {
+        try {
+//            String token = studentService.verify(studentDto);
+            LoginResponse loginResponse = studentService.verify(studentDto);
 
-//        String userName = studentDto.getUserName();
-//        String password = studentDto.getPassword();
-//
-//
-//        if (studentService.studentLogin(userName, password)) {
-//            //        session create
-////            session.setAttribute("id", studentDto.getStudentId());
-////            session.setAttribute("role", studentDto.getRole());
-//            return ResponseEntity.ok("Login successful.");
-//        }
-//        else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
-//        }
-////        return studentService.verify(studentDto);
-            return studentService.verify(studentDto);
+            return ResponseEntity.ok(new APIResponse(true, "Login successful", loginResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new APIResponse(false, e.getMessage(), null));
+        }
+    }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(GET_ALL_STUDENT)
+    public ResponseEntity<List<StudentDto>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents());
+    }
+
+//    admin control
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/approve/{studentId}")
+    public ResponseEntity<String> approveStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(studentService.approveStudent(studentId));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping(GET_ALL_STUDENT)
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-//        List<StudentDto> students = studentService.getAllStudents();
-        return ResponseEntity.ok(studentService.getAllStudents());
+    @DeleteMapping("/reject/{studentId}")
+    public ResponseEntity<String> rejectStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(studentService.rejectStudent(studentId));
+    }
 
+    @GetMapping("/pending")
+    public ResponseEntity<APIResponse> getPendingStudents() {
+        List<Student> pendingStudents = studentService.getPendingStudents();
+        return ResponseEntity.ok(new APIResponse(true, "Success", pendingStudents));
+    }
+
+//    @GetMapping("/username/{userName}")
+//    public ResponseEntity<Student> getStudentByUserName(@PathVariable String userName) {
+//        Student student = studentService.getStudentByUserName(userName);
+//        if (student != null) {
+//            return ResponseEntity.ok(student);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+//    to add for fee fetch to problem aries
+
+    @GetMapping("/username/{userName}")
+    public ResponseEntity<StudentDto> getStudentByUserName(@PathVariable String userName) {
+        StudentDto studentDto = studentService.getStudentDtoByUsername(userName);
+        if (studentDto != null) {
+            return ResponseEntity.ok(studentDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

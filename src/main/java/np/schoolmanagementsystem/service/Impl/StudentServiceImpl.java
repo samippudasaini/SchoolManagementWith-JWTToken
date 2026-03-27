@@ -7,7 +7,9 @@ import np.schoolmanagementsystem.Auth.JWTService;
 import np.schoolmanagementsystem.Auth.MyUserDetailsService;
 import np.schoolmanagementsystem.CustomExcaption.CustomRuntimeException;
 import np.schoolmanagementsystem.Enum.Role;
+import np.schoolmanagementsystem.Enum.StudentStatus;
 import np.schoolmanagementsystem.Mapper.StudentMapper;
+import np.schoolmanagementsystem.dto.LoginResponse;
 import np.schoolmanagementsystem.dto.StudentDto;
 import np.schoolmanagementsystem.dto.masterResponse;
 import np.schoolmanagementsystem.entity.Classroom;
@@ -33,6 +35,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private final ClassroomRepository classroomRepository;
+
     @Autowired
     private StudentRepository studentRepository;
 
@@ -110,6 +113,7 @@ public class StudentServiceImpl implements StudentService {
 
 //    student.setClassroom(existingClassroom.get());
 //    student.setRole(Role.STUDENT);
+    student.setStatus(StudentStatus.PENDING);
     Student savedStudent = studentRepository.save(student);
 
     // Prepare the response
@@ -124,43 +128,109 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public boolean studentLogin(String userName, String password) {
-        Student StudentOptional = studentRepository
-                .findByUserName(userName);
+        Student student = studentRepository.findByUserName(userName);
 
-        if (StudentOptional==null) {
-            throw new CustomRuntimeException("Student not found ");
-        } else {
-            Student student = StudentOptional.get();
-            if (!student.getUserName().equals(userName)) {
-                throw new CustomRuntimeException("Invalid userName");
-            }
-
-
-            if (!student.getPassword().equals(password)) {
-                throw new CustomRuntimeException("Invalid password");
-            }
-            return true;
+        if (student == null ) {
+            throw new CustomRuntimeException("Student does not exist");
+        }
+        if (!student.getStatus().equals(StudentStatus.APPROVED)) {
+            throw new CustomRuntimeException("Student is not approved");
         }
 
+        if (!student.getUserName().equals(userName)) {
+            throw new CustomRuntimeException("Invalid userName");
+        }
+
+        if (!encoder.matches(password, student.getPassword())) {
+            throw new CustomRuntimeException("Invalid password");
+        }
+
+
+        if (student.getRole() == null) {
+            throw new CustomRuntimeException("Student role is not assigned");
+        }
+
+        return true;
+        }
+
+    @Override
+    public LoginResponse verify(StudentDto studentDto) {
+//        Role role = studentDto.getRole();
+
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                studentDto.getUserName(),
+                                studentDto.getPassword()
+                        )
+                );
+
+        Student student = studentRepository.findByUserName(studentDto.getUserName());
+
+        if (student == null) {
+            throw new CustomRuntimeException("Student not found");
+        }
+
+        if (!student.getStatus().equals(StudentStatus.APPROVED)) {
+            throw new CustomRuntimeException("Student is not approved");
+        }
+
+        if (!encoder.matches(studentDto.getPassword(), student.getPassword())) {
+            throw new CustomRuntimeException("Invalid password");
+        }
+
+        if (student.getRole() == null) {
+            throw new CustomRuntimeException("Student role is not assigned");
+        }
+
+        String token = jwtService.generateToken(student.getUserName(), student.getRole());
+
+        StudentDto studentDtoResponse = StudentMapper.mapToStudentDto(student);
+
+        return new LoginResponse(token, studentDtoResponse);
+    }
+
+
+
+//    for admin control
+
+    @Override
+    public String approveStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new CustomRuntimeException("Student not found"));
+        student.setStatus(StudentStatus.APPROVED);
+        studentRepository.save(student);
+        return "Student approved successfully.";
     }
 
     @Override
-    public String verify(StudentDto studentDto) {
-
-
-//       String Entitytype=null;
-//
-        Role role = studentDto.getRole();
-
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(studentDto
-                        .getUserName(), studentDto.getPassword()));
-        if (authentication.isAuthenticated()) {
-
-            return jwtService.generateToken(studentDto.getUserName(), role);
-        }
-
-        return "fail";
+    public String rejectStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new CustomRuntimeException("Student not found"));
+        studentRepository.delete(student);
+        return "Student rejected and removed successfully.";
     }
+
+    @Override
+    public List<Student> getPendingStudents() {
+        return studentRepository.findByStatus(StudentStatus.PENDING);
+    }
+
+    @Override
+    public Student getStudentByUserName(String userName) {
+        return studentRepository.findByUserName(userName);
+    }
+
+//    for fee fetch
+@Override
+public StudentDto getStudentDtoByUsername(String userName) {
+    Student student = studentRepository.findByUserName(userName);
+    if (student == null) {
+        return null;
+    }
+    return StudentMapper.mapToStudentDto(student);
+}
+
+
 }
 

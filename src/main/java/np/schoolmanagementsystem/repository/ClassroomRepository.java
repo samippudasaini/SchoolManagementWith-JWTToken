@@ -1,6 +1,7 @@
 package np.schoolmanagementsystem.repository;
 
 import np.schoolmanagementsystem.entity.Classroom;
+import np.schoolmanagementsystem.entity.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,9 @@ import java.util.Optional;
 @EnableJpaRepositories
 public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     Optional<Classroom> findById(Long ClassroomId);
+    List<Classroom> findByGradeIn(List<String> grades);
+    Optional<Classroom> findByGrade(String grade);
+
+
 
 }

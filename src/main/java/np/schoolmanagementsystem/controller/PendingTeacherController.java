@@ -1,5 +1,4 @@
 package np.schoolmanagementsystem.controller;
-
 import np.schoolmanagementsystem.dto.PendingTeacherDto;
 import np.schoolmanagementsystem.dto.TeacherDto;
 import np.schoolmanagementsystem.service.PendingTeacherService;
@@ -16,12 +15,13 @@ public class PendingTeacherController{
     private PendingTeacherService pendingTeacherService;
 
     @PostMapping("/register")
-    public ResponseEntity<TeacherDto> registerPendingTeacher(@RequestBody TeacherDto teacherDto) {
-        TeacherDto saved = pendingTeacherService.registerPendingTeacher(teacherDto);
+    public ResponseEntity<PendingTeacherDto> registerPendingTeacher(@RequestBody PendingTeacherDto dto) {
+        PendingTeacherDto saved = pendingTeacherService.registerPendingTeacher(dto);
         return ResponseEntity.ok(saved);
 
 //        return ResponseEntity.ok(pendingTeacherService.registerPendingTeacher(dto));
     }
+
 
     @GetMapping
     public List<PendingTeacherDto> getAll() {

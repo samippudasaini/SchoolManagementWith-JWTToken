@@ -25,6 +25,7 @@ public class API {
     public static final String ADD_FEE = "/add-fee";
     public static final String DELETE_FEE_BY_ID = "/delete-fee/{feeId}";
     public static final String FEE_UPDATE = "/update-fee/{feeId}";
+    public static final String GET_ALL_FEE = "/get-all-fee";
 
 //    ITS FOR STAFF ENTITY
 
